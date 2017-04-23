@@ -4,6 +4,12 @@ fm = FeaturesMatrix()
 
 # main function
 def find_natural_class(phonemes=[]):
+  manner_features = assess_manner(phonemes)
+  if manner_features == ["+syllabic", "-consonantal"]:
+    print "CONSONANT"
+  else:
+    print "VOWEL"
+
   return True
 
 # extracts necessary manner features

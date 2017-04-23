@@ -13,7 +13,7 @@ class FeaturesMatrix(object):
                     "coronal",
                     "anterior", "distributed", "strident", "lateral", "dorsal", "high", "low", "front", "back", "tense"]
 
-    self.manner_features = ["consonantal", "sonorant", "continuant", "delayed_release", "approximant", "tap", "trill", "nasal"]
+    self.manner_features = ["syllabic", "consonantal", "sonorant", "continuant", "delayed_release", "approximant", "tap", "trill", "nasal"]
 
     self.place_features = ["labial", "round", "labiodental", "coronal", "anterior", "distributed", "strident", "lateral",
                     "dorsal", "high", "low", "front", "back", "tense"]
