@@ -7,18 +7,17 @@ basefeatures_path = "./basefeatures.txt"
 class FeaturesMatrix(object):
 
   def __init__(self):
-    self.all_features = ["syllabic", "stress", "long", "consonantal", "sonorant", "continuant", "delayed_release",
-                    "approximant",
-                    "tap", "trill", "nasal", "voice", "spread_gl", "constr_gl", "labial", "round", "labiodental",
-                    "coronal",
-                    "anterior", "distributed", "strident", "lateral", "dorsal", "high", "low", "front", "back", "tense"]
+    # hard code features here in optimal order for comparison
+    self.all_features = ["syllabic", "consonantal", "sonorant", "continuant", "delayed_release", "approximant", "tap", "trill", "nasal",
+                    "labial", "round", "labiodental", "coronal", "anterior", "distributed", "strident", "lateral", "dorsal",
+                    "high", "low", "front", "back",  "round", "tense", "coronal", "voice", "stress", "long", "spread_gl", "constr_gl"]
 
     self.manner_features = ["syllabic", "consonantal", "sonorant", "continuant", "delayed_release", "approximant", "tap", "trill", "nasal"]
 
     self.place_features = ["labial", "round", "labiodental", "coronal", "anterior", "distributed", "strident", "lateral",
                     "dorsal", "high", "low", "front", "back", "tense"]
 
-    self.vowel_features = ["round", "high", "low", "front", "back", "tense"]
+    self.vowel_features = ["high", "low", "front", "back", "round", "tense"]
     self.voice_features = ["voice"]
     self.basefeatures_text = open(basefeatures_path).read()
     self.phonemes_dict = self._get_phonemes_dict()
@@ -65,3 +64,18 @@ class FeaturesMatrix(object):
 
   def get_shared_features(self, phonemes=[]):
     return list(set([f for p in phonemes for f in self.get_all_features(p)]))
+
+  def get_shared_manner_features(self, phonemes=[]):
+    return list(set([f for p in phonemes for f in self.get_manner_features(p)]))
+
+  def get_shared_place_features(self, phonemes=[]):
+    return list(set([f for p in phonemes for f in self.get_place_features(p)]))
+
+  def get_shared_vowel_features(self, phonemes=[]):
+    return list(set([f for p in phonemes for f in self.get_vowel_features(p)]))
+
+  def _sort_features(self, features):
+    # Use order of self.all_features to make sure features are in the right order
+    bare_features = [feature[1:] for feature in features]
+    order = zip(self.all_features, range(1, len(self.all_features)))
+    return bare_features

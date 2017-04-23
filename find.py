@@ -14,6 +14,8 @@ def find_natural_class(phonemes=[]):
 
 # extracts necessary manner features
 def assess_manner(phonemes=[]):
+  shared_features = fm.get_shared_manner_features(phonemes)
+
   return True
 
 # extracts necessary place features
@@ -31,4 +33,6 @@ print fm.get_place_features("d")
 print fm.get_voice_features("d")
 print fm.get_vowel_features("o")
 
-print fm.get_shared_features(["d", "p"])
+print fm.get_shared_manner_features(["d", "p"])
+
+print fm._sort_features(["yo"])
