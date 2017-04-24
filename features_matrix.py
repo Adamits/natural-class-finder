@@ -8,9 +8,9 @@ class FeaturesMatrix(object):
 
   def __init__(self):
     # hard code features here in optimal order for comparison
-    self.all_features = ["syllabic", "consonantal", "sonorant", "continuant", "delayed_release", "approximant", "tap", "trill", "nasal",
-                    "labial", "round", "labiodental", "coronal", "anterior", "distributed", "strident", "lateral", "dorsal",
-                    "high", "low", "front", "back",  "round", "tense", "coronal", "voice", "stress", "long", "spread_gl", "constr_gl"]
+    self.all_features = ["syllabic", "stress", "long", "consonantal", "sonorant", "continuant", "delayed_release", "approximant", "tap",
+                         "trill", "nasal", "voice", "spread_gl", "constr_gl", "labial", "round", "labiodental", "coronal", "anterior", "distributed",
+                         "strident", "lateral", "dorsal", "high", "low", "front", "back", "tense"]
 
     self.manner_features = ["syllabic", "consonantal", "sonorant", "continuant", "delayed_release", "approximant", "tap", "trill", "nasal"]
 

@@ -30,7 +30,7 @@ def assess_voice():
 # May still need to implement something for unicode
 print fm.get_manner_features("d")
 print fm.get_place_features("d")
-print fm.get_voice_features("d")
+print fm.get_voice_features("b")
 print fm.get_vowel_features("o")
 
 print fm.get_shared_manner_features(["d", "p"])
