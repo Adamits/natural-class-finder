@@ -22,17 +22,21 @@ def assess_manner(phonemes=[]):
 def assess_place():
   return True
 
+def assess_vowels():
+  return True
+
 # extracts necessary voicing feature
 def assess_voice():
   return True
 
 # Demonstrate usage of FeaturesMatrix
 # May still need to implement something for unicode
-print fm.get_manner_features("d")
-print fm.get_place_features("d")
-print fm.get_voice_features("b")
-print fm.get_vowel_features("o")
+#print fm.get_place_features("d")
+#print fm.get_voice_features("b")
+#print fm.get_vowel_features("o")
 
-print fm.get_shared_manner_features(["d", "p"])
-
-print fm._sort_features(["yo"])
+print fm.get_manner_features("l")
+x = fm.get_shared_manner_features(["w", "l", "j"])
+print x
+print fm.sort_manner_features(x)
+#print fm._sort_features(["yo"])
