@@ -1,4 +1,5 @@
 # PATH to the basefeatures file taken from Haye's Pheatures
+# v2 changes: all_features list reordered to match basefeatures.txt, changing shared features functions to do intersection instead of union
 basefeatures_path = "./basefeatures.txt"
 
 # Class for interfacing with Hayes feature matrix
@@ -8,9 +9,9 @@ class FeaturesMatrix(object):
 
   def __init__(self):
     # hard code features here in optimal order for comparison
-    self.all_features = ["syllabic", "stress", "long", "consonantal", "sonorant", "continuant", "delayed_release", "approximant", "tap",
-                         "trill", "nasal", "voice", "spread_gl", "constr_gl", "labial", "round", "labiodental", "coronal", "anterior", "distributed",
-                         "strident", "lateral", "dorsal", "high", "low", "front", "back", "tense"]
+    self.all_features = ["syllabic", "stress", "long", "consonantal", "sonorant", "continuant", "delayed_release", "approximant", "tap", "trill", "nasal",
+                    "voice", "spread_gl", "constr_gl", "labial", "round", "labiodental", "coronal", "anterior", "distributed", "strident", "lateral", "dorsal",
+                    "high", "low", "front", "back",  "tense"]
 
     self.manner_features = ["syllabic", "consonantal", "sonorant", "continuant", "delayed_release", "approximant", "tap", "trill", "nasal"]
 
@@ -29,7 +30,9 @@ class FeaturesMatrix(object):
     for row in matrix[1:]:
       # At each row, store phone as key, and list of key/value pairs of label and +/-/0
       phonemes_dict[row[0]] = dict(zip(self.all_features, row[1:]))
+    #print phonemes_dict["a"]	#not being read in right
 
+    #print phonemes_dict['t\xcd\xa1\xc9\xac']
     return phonemes_dict
 
   def get_manner_features(self, phoneme):
