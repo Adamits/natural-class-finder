@@ -52,12 +52,9 @@ def assess_voice():
 #print fm.get_voice_features("b")
 #print fm.get_vowel_features("o")
 print fm.get_all_features("œ")
-print fm.get_place_features("p")
-print fm.get_place_features("b")
-print fm.get_place_features("f")
-print fm.get_place_features("v")
-print fm.get_place_features("m")
-x = fm.get_shared_place_features(["p", "b", "m", "f", "v"])
+print fm.get_place_features("ə")
+print fm.get_place_features("ɛ")
+x = fm.get_shared_place_features(["œ", "ə", "ɛ"])
 print x
 place_features = assess_place(fm.sort_place_features(x))
 print [f.full_string for f in place_features]

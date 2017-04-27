@@ -16,8 +16,8 @@ class FeaturesMatrix(object):
     self.manner_features = ["syllabic", "consonantal", "approximant", "sonorant", "continuant", "delayed_release", "tap", "trill", "nasal"]
 
     self.place_features = ["labial", "round", "labiodental", "coronal", "anterior", "distributed", "strident", "lateral",
-                    "dorsal", "high", "low", "front", "back", "tense"]
-    self.vowel_features = ["high", "low", "front", "back", "round", "tense"]
+                    "dorsal", "high", "low", "front", "back"]
+    self.vowel_features = ["round", "tense"]
     self.voice_features = ["voice"]
     self.place_tree = {"parents": ["labial", "coronal", "dorsal"],
                        "labial": ["round", "labiodental"],
@@ -111,19 +111,6 @@ class FeaturesMatrix(object):
       input_features_dict[feature[1:]] = feature
 
     for ordered_feature in self.place_features:
-      if input_features_dict.get(ordered_feature):
-        output_features.append(input_features_dict[ordered_feature])
-
-    return output_features
-
-  def sort_vowel_features(self, features):
-    input_features_dict = {}
-    output_features = []
-
-    for feature in features:
-      input_features_dict[feature[1:]] = feature
-
-    for ordered_feature in self.vowel_features:
       if input_features_dict.get(ordered_feature):
         output_features.append(input_features_dict[ordered_feature])
 
