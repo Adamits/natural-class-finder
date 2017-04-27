@@ -34,5 +34,6 @@ print fm.get_voice_features("b")
 print fm.get_vowel_features("o")
 
 print fm.get_shared_manner_features(["d", "p"])
+print fm.get_shared_manner_features(["w", "l", "j"])
 
 print fm._sort_features(["yo"])
