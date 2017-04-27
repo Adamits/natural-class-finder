@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from features_matrix import *
 
 fm = FeaturesMatrix()
@@ -32,6 +33,7 @@ def assess_place(features):
     if feature.name in fm.place_tree["parents"] and feature.is_positive():
       parent = feature
 
+    # Get all the shared features within the parent that they share
     if parent and feature.name in fm.place_tree.get(parent.name):
       features_to_compare.append(feature)
 
@@ -49,10 +51,13 @@ def assess_voice():
 #print fm.get_place_features("d")
 #print fm.get_voice_features("b")
 #print fm.get_vowel_features("o")
-
-print fm.get_place_features("r")
-print fm.get_place_features("l")
-x = fm.get_shared_place_features(["r", "l"])
+print fm.get_all_features("œ")
+print fm.get_place_features("p")
+print fm.get_place_features("b")
+print fm.get_place_features("f")
+print fm.get_place_features("v")
+print fm.get_place_features("m")
+x = fm.get_shared_place_features(["p", "b", "m", "f", "v"])
 print x
 place_features = assess_place(fm.sort_place_features(x))
 print [f.full_string for f in place_features]
