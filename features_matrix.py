@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # PATH to the basefeatures file taken from Haye's Pheatures
 basefeatures_path = "./basefeatures.txt"
 
@@ -16,9 +17,12 @@ class FeaturesMatrix(object):
 
     self.place_features = ["labial", "round", "labiodental", "coronal", "anterior", "distributed", "strident", "lateral",
                     "dorsal", "high", "low", "front", "back", "tense"]
-
     self.vowel_features = ["high", "low", "front", "back", "round", "tense"]
     self.voice_features = ["voice"]
+    self.place_tree = {"parents": ["labial", "coronal", "dorsal"],
+                       "labial": ["round", "labiodental"],
+                       "coronal": ["anterior", "distributed", "strident", "lateral"],
+                       "dorsal": ["high", "low", "front", "back"]}
     self.basefeatures_text = open(basefeatures_path).read()
     self.phonemes_dict = self._get_phonemes_dict()
 
@@ -65,29 +69,74 @@ class FeaturesMatrix(object):
   def get_shared_features(self, phonemes=[]):
     shared = []
     for p in phonemes:
-		shared.append(set(self.get_all_features(p)))
+		  shared.append(set(self.get_all_features(p)))
     return list(set.intersection(*shared))
 
   def get_shared_manner_features(self, phonemes=[]):
     shared = []
     for p in phonemes:
-		shared.append(set(self.get_manner_features(p)))
+		  shared.append(set(self.get_manner_features(p)))
     return list(set.intersection(*shared))
 
   def get_shared_place_features(self, phonemes=[]):
     shared = []
     for p in phonemes:
-		shared.append(set(self.get_place_features(p)))
+		  shared.append(set(self.get_place_features(p)))
     return list(set.intersection(*shared))
 
   def get_shared_vowel_features(self, phonemes=[]):
     shared = []
     for p in phonemes:
-		shared.append(set(self.get_vowel_features(p)))
+		  shared.append(set(self.get_vowel_features(p)))
     return list(set.intersection(*shared))
 
-  def _sort_features(self, features):
-    # Use order of self.all_features to make sure features are in the right order
-    bare_features = [feature[1:] for feature in features]
-    order = zip(self.all_features, range(1, len(self.all_features)))
-    return bare_features
+  def sort_manner_features(self, features):
+    input_features_dict = {}
+    output_features = []
+
+    for feature in features:
+      input_features_dict[feature[1:]] = feature
+
+    for ordered_feature in self.manner_features:
+      if input_features_dict.get(ordered_feature):
+        output_features.append(input_features_dict[ordered_feature])
+
+    return output_features
+
+  def sort_place_features(self, features):
+    input_features_dict = {}
+    output_features = []
+
+    for feature in features:
+      input_features_dict[feature[1:]] = feature
+
+    for ordered_feature in self.place_features:
+      if input_features_dict.get(ordered_feature):
+        output_features.append(input_features_dict[ordered_feature])
+
+    return output_features
+
+  def sort_vowel_features(self, features):
+    input_features_dict = {}
+    output_features = []
+
+    for feature in features:
+      input_features_dict[feature[1:]] = feature
+
+    for ordered_feature in self.vowel_features:
+      if input_features_dict.get(ordered_feature):
+        output_features.append(input_features_dict[ordered_feature])
+
+    return output_features
+
+class Feature(object):
+  def __init__(self, feature_string):
+    self.full_string = feature_string
+    self.name = self.full_string[1:]
+    self.value = self.full_string[0]
+
+  def is_positive(self):
+    return self.value == "+"
+
+  def is_negative(self):
+    return self.value == "-"
