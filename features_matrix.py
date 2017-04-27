@@ -76,13 +76,13 @@ class FeaturesMatrix(object):
     shared = []
     for p in phonemes:
 		  shared.append(set(self.get_manner_features(p)))
-    return list(set.intersection(*shared))
+    return self.sort_manner_features(list(set.intersection(*shared)))
 
   def get_shared_place_features(self, phonemes=[]):
     shared = []
     for p in phonemes:
 		  shared.append(set(self.get_place_features(p)))
-    return list(set.intersection(*shared))
+    return self.sort_place_features(list(set.intersection(*shared)))
 
   def get_shared_vowel_features(self, phonemes=[]):
     shared = []

@@ -20,11 +20,12 @@ def assess_manner(phonemes=[]):
   return True
 
 # extracts necessary place features
-def assess_place(features):
+def assess_place(phonemes=[]):
   features_to_compare = []
   parent = None
 
-  for feature_string in features:
+  for feature_string in fm.get_shared_place_features(phonemes):
+    # Instantiate as a Feature object, described in features_matrix.py
     feature = Feature(feature_string)
 
     # Assumption is that each shared feature set can only possibly have one 'parent'
@@ -39,8 +40,8 @@ def assess_place(features):
 
   return features_to_compare
 
-def assess_vowels():
-  return True
+def assess_vowels(phonemes):
+  return [Feature(f) for f in fm.get_shared_vowel_features(phonemes)]
 
 # extracts necessary voicing feature
 def assess_voice():
@@ -51,11 +52,13 @@ def assess_voice():
 #print fm.get_place_features("d")
 #print fm.get_voice_features("b")
 #print fm.get_vowel_features("o")
-print fm.get_all_features("œ")
+print fm.get_place_features("œ")
 print fm.get_place_features("ə")
 print fm.get_place_features("ɛ")
-x = fm.get_shared_place_features(["œ", "ə", "ɛ"])
-print x
-place_features = assess_place(fm.sort_place_features(x))
-print [f.full_string for f in place_features]
+place_features = assess_place(["œ", "ə", "ɛ"])
+print fm.get_vowel_features("œ")
+print fm.get_vowel_features("ə")
+print fm.get_vowel_features("ɛ")
+vowel_features = assess_vowels(["œ", "ə", "ɛ"])
+print [f.full_string for f in place_features + vowel_features]
 #print fm._sort_features(["yo"])
