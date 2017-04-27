@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # PATH to the basefeatures file taken from Haye's Pheatures
 basefeatures_path = "./basefeatures.txt"
 
