@@ -15,9 +15,72 @@ def find_natural_class(phonemes=[]):
 
 # extracts necessary manner features
 def assess_manner(phonemes=[]):
-  shared_features = fm.get_shared_manner_features(phonemes)
+	shared_features = fm.get_shared_manner_features(phonemes)
+	sorted_manner = fm.sort_manner_features(shared_features)
 
-  return True
+	all_manner_features = fm.manner_features
+	
+	efficient_features = []
+	
+	if len(sorted_manner) >= 5:		# all major manner features same, vowel/glide/liquid/nasal/fricative/affricate/stop
+		for i, x in enumerate(sorted_manner):		# turning them into bools for my own sake
+			if x[0] == "+":
+				sorted_manner[i] = True
+			else:
+				sorted_manner[i] = False
+		
+		sorted_manner[1] = not sorted_manner[1] 	# have to flip consonantal feature momentarily :P
+		
+		if sorted_manner[0] == True:	# +syllabic
+			efficient_features.append("+syllabic")
+			return efficient_features
+		else:
+			negative_counter = 0	# marks where overlap is
+			for i, x in enumerate(sorted_manner):
+				negative_counter = 5	# set default
+				if x == True:
+					negative_counter = i
+					break
+
+			if negative_counter == 5:	# reached end of chart, nothing +, stop
+				efficient_features.append("-delayed_release")
+				return efficient_features
+				
+			feature1 = "-" + all_manner_features[negative_counter-1]
+			feature2 = "+" + all_manner_features[negative_counter]
+			
+			efficient_features.append(feature1)
+			efficient_features.append(feature2)
+			
+
+
+	for i, x in enumerate(efficient_features):
+		if x[1:] == "consonantal":	# swapping back consonantal values bs
+			if x[0] == "+":
+				efficient_features[i] = "-" + x[1:]
+			else:
+				efficient_features[i] = "+" + x[1:]
+				
+	return efficient_features
+
+"""
+
+		syllabic	consonantal		approximant		sonorant		continuant		delayed release			Expected output
+		
+a, e, i		+			-				+				+				+				0					+syllabic
+w, j		-			-	(+)			+				+				+				0					-syllabic, -consonantal
+l, r		-			+	(-)			+				+				+				0					+consonantal, +approximant
+m, n		-			+ 	(-)			-				+				-				0					-approximant, +sonorant
+f, s		-			+	(-)			-				-				+				+					-sonorant, +continuant
+affricate																									-continuant, +delayed release
+t, k		-			+	(-)			-				-				-				-					-delayed_release
+
+
+a, e, w, j	0			0				+				+				+				0					-consonantal
+w, j, l, r	-			0				0				+				+				0					-syllabic, +approximant	
+
+"""
+
 
 # extracts necessary place features
 def assess_place(features):
@@ -49,17 +112,16 @@ def assess_voice():
 # Demonstrate usage of FeaturesMatrix
 # May still need to implement something for unicode
 
-print fm.get_manner_features("d")
-print fm.get_place_features("d")
-print fm.get_voice_features("b")
-print fm.get_vowel_features("o")
 
-print fm.get_shared_manner_features(["d", "p"])
-print fm.get_shared_manner_features(["w", "l", "j"])
-
-print fm._sort_features(["yo"])
+print assess_manner(["a", "e"])	# vowels
+print assess_manner(["w", "j"])	# glides
+print assess_manner(["m", "n"])	# nasals
+print assess_manner(["f", "s"])	# fricatives
+print assess_manner(["t", "k"])	# stops
 
 
+
+"""
 print fm.get_all_features("œ")
 print fm.get_place_features("p")
 print fm.get_place_features("b")
@@ -69,6 +131,6 @@ print fm.get_place_features("m")
 x = fm.get_shared_place_features(["p", "b", "m", "f", "v"])
 print x
 place_features = assess_place(fm.sort_place_features(x))
-print [f.full_string for f in place_features]
-#print fm._sort_features(["yo"])
+print [f.full_string for f in place_features]	#ideally should say +labial"""
+
 
