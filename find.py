@@ -117,7 +117,8 @@ def assess_optimal(phonemes = []):
 	
 	optimal.extend(manner)
 	optimal.extend(place)
-	if "-delayed_release" in manner or "-continuant" in manner or "-sonorant" in manner:
+	# only care about voicing if theres an obstruent
+	if "-delayed_release" in manner or "-continuant" in manner or "-sonorant" in manner or "-voice" in voice:
 		optimal.extend(voice)
 		
 	return optimal
@@ -130,9 +131,10 @@ def assess_optimal(phonemes = []):
 print assess_optimal(["t", "k", "p"])
 print assess_optimal(["w", "j"])
 
-"""
+
 print assess_manner(["i", "e"])	# vowels
 print assess_manner(["w", "j"])	# glides
+"""
 print assess_manner(["m", "n"])	# nasals
 print assess_manner(["f", "s"])	# fricatives
 print assess_manner(["t", "k"])	# stops
