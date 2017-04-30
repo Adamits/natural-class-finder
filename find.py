@@ -3,18 +3,6 @@ from features_matrix import *
 
 fm = FeaturesMatrix()
 
-
-# main function
-def find_natural_class(phonemes=[]):
-  manner_features = assess_manner(phonemes)
-  if manner_features == ["+syllabic", "-consonantal"]:
-    print "CONSONANT"
-  else:
-    print "VOWEL"
-
-  return True
-
-
 # extracts necessary manner features
 def assess_manner(phonemes=[]):
   # Use Feature class
@@ -116,6 +104,8 @@ def assess_optimal(phonemes=[]):
 
   optimal.extend(manner)
   optimal.extend(place)
+
+  # Check if voicing is a necessary feature
   if not set(["-delayed_release", "-continuant", "-sonorant"]).isdisjoint([m.full_string for m in manner]):
     optimal.extend(voice)
 
@@ -125,9 +115,9 @@ def assess_optimal(phonemes=[]):
 # Demonstrate usage of FeaturesMatrix
 # May still need to implement something for unicode
 
-
 print assess_optimal(["t", "k", "p"])
 print assess_optimal(["w", "j"])
+print assess_optimal(["a", "e"])
 
 """
 print assess_manner(["i", "e"]) # vowels
