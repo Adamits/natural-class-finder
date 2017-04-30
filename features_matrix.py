@@ -127,3 +127,13 @@ class Feature(object):
 
   def is_negative(self):
     return self.value == "-"
+
+  def make_positive(self):
+    self.value = "+"
+    self.full_string = self.name + self.value
+    return self
+
+  def make_negative(self):
+    self.value = "-"
+    self.full_string = self.name + self.value
+    return self

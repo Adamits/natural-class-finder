@@ -17,50 +17,45 @@ def find_natural_class(phonemes=[]):
 
 # extracts necessary manner features
 def assess_manner(phonemes=[]):
-  shared_features = fm.get_shared_manner_features(phonemes)
+  # Use Feature class
+  shared_features = [Feature(f) for f in fm.get_shared_manner_features(phonemes)]
 
-  all_manner_features = fm.manner_features
+  all_manner_features = [Feature(f) for f in fm.manner_features]
 
   efficient_features = []
 
   if len(shared_features) >= 5:  # all major manner features same, vowel/glide/liquid/nasal/fricative/affricate/stop
-    for i, x in enumerate(shared_features): # turning them into bools for my own sake
-      if x[0] == "+":
-        shared_features[i] = True
-      else:
-        shared_features[i] = False
+    shared_features[1].value = not shared_features[1].value  # have to flip consonantal feature momentarily :P
 
-    shared_features[1] = not shared_features[1]  # have to flip consonantal feature momentarily :P
-
-    if shared_features[0] == True:  # +syllabic
-      efficient_features.append("+syllabic")
-      return efficient_features
+    if shared_features[0].is_positive():  # +syllabic
+      efficient_features.append(shared_features[0])
+      return [f.full_string for f in efficient_features]
     else:
       negative_counter = 0  # marks where overlap is
       for i, x in enumerate(shared_features):
         negative_counter = 5  # set default
-        if x == True:
+        if x.is_positive():
           negative_counter = i
           break
 
       if negative_counter == 5:  # reached end of chart, nothing +, stop
-        efficient_features.append("-delayed_release")
-        return efficient_features
+        efficient_features.append(Feature("-delayed_release"))
+        return [f.full_string for f in efficient_features]
 
-      feature1 = "-" + all_manner_features[negative_counter - 1]
-      feature2 = "+" + all_manner_features[negative_counter]
+      feature1 = all_manner_features[negative_counter - 1].make_negative()
+      feature2 = all_manner_features[negative_counter].make_positive()
 
       efficient_features.append(feature1)
       efficient_features.append(feature2)
 
   for i, x in enumerate(efficient_features):
-    if x[1:] == "consonantal":  # swapping back consonantal values bs
-      if x[0] == "+":
-        efficient_features[i] = "-" + x[1:]
+    if x.name == "consonantal":  # swapping back consonantal values bs
+      if x.is_positive():
+        efficient_features[i] = "-" + x.value
       else:
-        efficient_features[i] = "+" + x[1:]
+        efficient_features[i] = "+" + x.value
 
-  return efficient_features
+  return [f.full_string for f in efficient_features]
 
 
 """
