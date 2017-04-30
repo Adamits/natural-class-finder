@@ -104,18 +104,54 @@ def assess_vowels(phonemes):
 
 
 # extracts necessary voicing feature
-def assess_voice():
-  return True
+def assess_voice(features):
+	shared_features = fm.get_shared_voice_features(features)
+	return shared_features
+
+
+def assess_optimal(phonemes = []):
+	optimal = []
+	manner = assess_manner(phonemes)
+	place = assess_place(phonemes)
+	voice = assess_voice(phonemes)
+	
+	optimal.extend(manner)
+	optimal.extend(place)
+	if "-delayed_release" in manner or "-continuant" in manner or "-sonorant" in manner:
+		optimal.extend(voice)
+		
+	return optimal
 
 
 # Demonstrate usage of FeaturesMatrix
 # May still need to implement something for unicode
 
-print assess_manner(["a", "e"])  # vowels
-print assess_manner(["w", "j"])  # glides
-print assess_manner(["m", "n"])  # nasals
-print assess_manner(["f", "s"])  # fricatives
-print assess_manner(["t", "k"])  # stops
+
+print assess_optimal(["t", "k", "p"])
+print assess_optimal(["w", "j"])
+
+"""
+print assess_manner(["i", "e"])	# vowels
+print assess_manner(["w", "j"])	# glides
+print assess_manner(["m", "n"])	# nasals
+print assess_manner(["f", "s"])	# fricatives
+print assess_manner(["t", "k"])	# stops
+"""
+
+
+
+"""
+print fm.get_all_features("œ")
+print fm.get_place_features("p")
+print fm.get_place_features("b")
+print fm.get_place_features("f")
+print fm.get_place_features("v")
+print fm.get_place_features("m")
+x = fm.get_shared_place_features(["p", "b", "m", "f", "v"])
+print x
+place_features = assess_place(fm.sort_place_features(x))
+print [f.full_string for f in place_features]	#ideally should say +labial"""
+
 
 # Some vowels tests
 print fm.get_place_features("œ")
@@ -127,3 +163,4 @@ print fm.get_vowel_features("ə")
 print fm.get_vowel_features("ɛ")
 vowel_features = assess_vowels(["œ", "ə", "ɛ"])
 print [f.full_string for f in place_features + vowel_features]
+
