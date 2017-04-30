@@ -29,7 +29,7 @@ def assess_manner(phonemes=[]):
 
     if shared_features[0].is_positive():  # +syllabic
       efficient_features.append(shared_features[0])
-      return [f.full_string for f in efficient_features]
+      return efficient_features
     else:
       negative_counter = 0  # marks where overlap is
       for i, x in enumerate(shared_features):
@@ -40,7 +40,7 @@ def assess_manner(phonemes=[]):
 
       if negative_counter == 5:  # reached end of chart, nothing +, stop
         efficient_features.append(Feature("-delayed_release"))
-        return [f.full_string for f in efficient_features]
+        return efficient_features
 
       feature1 = all_manner_features[negative_counter - 1].make_negative()
       feature2 = all_manner_features[negative_counter].make_positive()
@@ -55,7 +55,7 @@ def assess_manner(phonemes=[]):
       else:
         efficient_features[i] = x.make_positive()
 
-  return [f.full_string for f in efficient_features]
+  return efficient_features
 
 
 """
@@ -105,23 +105,22 @@ def assess_vowels(phonemes):
 
 # extracts necessary voicing feature
 def assess_voice(features):
-	shared_features = fm.get_shared_voice_features(features)
-	return shared_features
+  return [Feature(f) for f in fm.get_shared_voice_features(features)]
 
 
-def assess_optimal(phonemes = []):
-	optimal = []
-	manner = assess_manner(phonemes)
-	place = assess_place(phonemes)
-	voice = assess_voice(phonemes)
-	
-	optimal.extend(manner)
-	optimal.extend(place)
-	# only care about voicing if theres an obstruent
-	if "-delayed_release" in manner or "-continuant" in manner or "-sonorant" in manner or "-voice" in voice:
-		optimal.extend(voice)
-		
-	return optimal
+
+def assess_optimal(phonemes=[]):
+  optimal = []
+  manner = assess_manner(phonemes)
+  place = assess_place(phonemes)
+  voice = assess_voice(phonemes)
+
+  optimal.extend(manner)
+  optimal.extend(place)
+  if not set(["-delayed_release", "-continuant", "-sonorant"]).isdisjoint([m.full_string for m in manner]):
+    optimal.extend(voice)
+
+  return [o.full_string for o in optimal]
 
 
 # Demonstrate usage of FeaturesMatrix
@@ -138,11 +137,10 @@ print assess_manner(["w", "j"])	# glides
 print assess_manner(["m", "n"])	# nasals
 print assess_manner(["f", "s"])	# fricatives
 print assess_manner(["t", "k"])	# stops
-"""
-
-
 
 """
+
+
 print fm.get_all_features("œ")
 print fm.get_place_features("p")
 print fm.get_place_features("b")
@@ -152,17 +150,5 @@ print fm.get_place_features("m")
 x = fm.get_shared_place_features(["p", "b", "m", "f", "v"])
 print x
 place_features = assess_place(fm.sort_place_features(x))
-print [f.full_string for f in place_features]	#ideally should say +labial"""
-
-
-# Some vowels tests
-print fm.get_place_features("œ")
-print fm.get_place_features("ə")
-print fm.get_place_features("ɛ")
-place_features = assess_place(["œ", "ə", "ɛ"])
-print fm.get_vowel_features("œ")
-print fm.get_vowel_features("ə")
-print fm.get_vowel_features("ɛ")
-vowel_features = assess_vowels(["œ", "ə", "ɛ"])
-print [f.full_string for f in place_features + vowel_features]
+print [f.full_string for f in place_features] #ideally should say +labial"""
 
