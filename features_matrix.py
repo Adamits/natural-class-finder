@@ -16,8 +16,8 @@ class FeaturesMatrix(object):
     self.manner_features = ["syllabic", "consonantal", "approximant", "sonorant", "continuant", "delayed_release"] #"tap", "trill", "nasal"]
 
     self.place_features = ["labial", "round", "labiodental", "coronal", "anterior", "distributed", "strident", "lateral",
-                    "dorsal", "high", "low", "front", "back", "tense"]
-    self.vowel_features = ["high", "low", "front", "back", "round", "tense"]
+                    "dorsal", "high", "low", "front", "back"]
+    self.vowel_features = ["round", "tense"]
     self.voice_features = ["voice"]
     self.place_tree = {"parents": ["labial", "coronal", "dorsal"],
                        "labial": ["round", "labiodental"],
@@ -76,13 +76,13 @@ class FeaturesMatrix(object):
     shared = []
     for p in phonemes:
 		  shared.append(set(self.get_manner_features(p)))
-    return list(set.intersection(*shared))
+    return self.sort_manner_features(list(set.intersection(*shared)))
 
   def get_shared_place_features(self, phonemes=[]):
     shared = []
     for p in phonemes:
 		  shared.append(set(self.get_place_features(p)))
-    return list(set.intersection(*shared))
+    return self.sort_place_features(list(set.intersection(*shared)))
 
   def get_shared_vowel_features(self, phonemes=[]):
     shared = []
@@ -122,19 +122,6 @@ class FeaturesMatrix(object):
 
     return output_features
 
-  def sort_vowel_features(self, features):
-    input_features_dict = {}
-    output_features = []
-
-    for feature in features:
-      input_features_dict[feature[1:]] = feature
-
-    for ordered_feature in self.vowel_features:
-      if input_features_dict.get(ordered_feature):
-        output_features.append(input_features_dict[ordered_feature])
-
-    return output_features
-
 class Feature(object):
   def __init__(self, feature_string):
     self.full_string = feature_string
@@ -146,3 +133,13 @@ class Feature(object):
 
   def is_negative(self):
     return self.value == "-"
+
+  def make_positive(self):
+    self.value = "+"
+    self.full_string = self.name + self.value
+    return self
+
+  def make_negative(self):
+    self.value = "-"
+    self.full_string = self.name + self.value
+    return self
