@@ -19,6 +19,7 @@ class FeaturesMatrix(object):
                     "dorsal", "high", "low", "front", "back"]
     self.vowel_features = ["round", "tense"]
     self.voice_features = ["voice"]
+    self.extra_features = ["tap", "trill", "nasal", "voice", "spread_gl", "constr_gl"]
     self.place_tree = {"parents": ["labial", "coronal", "dorsal"],
                        "labial": ["round", "labiodental"],
                        "coronal": ["anterior", "distributed", "strident", "lateral"],
