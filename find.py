@@ -20,7 +20,7 @@ def assess_manner(phonemes=[]):
   # Use Feature class
   shared_features = [Feature(f) for f in fm.get_shared_manner_features(phonemes)]
 
-  all_manner_features = [Feature(f) for f in fm.manner_features]
+  all_manner_features = fm.get_all_manner_features()
 
   efficient_features = []
 
@@ -51,9 +51,9 @@ def assess_manner(phonemes=[]):
   for i, x in enumerate(efficient_features):
     if x.name == "consonantal":  # swapping back consonantal values bs
       if x.is_positive():
-        efficient_features[i] = "-" + x.value
+        efficient_features[i] = x.make_negative()
       else:
-        efficient_features[i] = "+" + x.value
+        efficient_features[i] = x.make_positive()
 
   return [f.full_string for f in efficient_features]
 

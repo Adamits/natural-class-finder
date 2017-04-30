@@ -36,6 +36,10 @@ class FeaturesMatrix(object):
 
     return phonemes_dict
 
+  def get_all_manner_features(self):
+    # Put negative palceholder for unvalued features
+    return [Feature("-" + f) for f in self.manner_features]
+
   def get_manner_features(self, phoneme):
     phoneme_features_dict = self.phonemes_dict[phoneme]
     features = [phoneme_features_dict[feature] + feature for feature in self.manner_features if
@@ -136,10 +140,10 @@ class Feature(object):
 
   def make_positive(self):
     self.value = "+"
-    self.full_string = self.name + self.value
+    self.full_string = self.value + self.name
     return self
 
   def make_negative(self):
     self.value = "-"
-    self.full_string = self.name + self.value
+    self.full_string = self.value + self.name
     return self
