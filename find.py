@@ -83,8 +83,12 @@ def assess_place(phonemes=[]):
     # Get all the shared features within the parent that they share
     if parent and feature.name in fm.place_tree.get(parent.name):
       features_to_compare.append(feature)
-
-  return features_to_compare
+  if features_to_compare:
+    return features_to_compare
+  elif parent:
+    return [parent]
+  else:
+    return []
 
 
 def assess_vowels(phonemes):
@@ -123,6 +127,7 @@ print assess_optimal(["a", "e"])
 
 print assess_optimal(["i", "e"])	# vowels
 print assess_optimal(["w", "j"])	# glides
+
 
 x = assess_manner(["f", "s"])	# fricatives
 print x[0].name
