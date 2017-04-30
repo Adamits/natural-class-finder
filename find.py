@@ -131,24 +131,17 @@ print assess_optimal(["t", "k", "p"])
 print assess_optimal(["w", "j"])
 
 
-print assess_manner(["i", "e"])	# vowels
-print assess_manner(["w", "j"])	# glides
+print assess_optimal(["i", "e"])	# vowels
+print assess_optimal(["w", "j"])	# glides
+
+x = assess_manner(["f", "s"])	# fricatives
+print x[0].name
+print x[0].value
+print x[0].full_string
 """
 print assess_manner(["m", "n"])	# nasals
 print assess_manner(["f", "s"])	# fricatives
 print assess_manner(["t", "k"])	# stops
 
 """
-
-
-print fm.get_all_features("œ")
-print fm.get_place_features("p")
-print fm.get_place_features("b")
-print fm.get_place_features("f")
-print fm.get_place_features("v")
-print fm.get_place_features("m")
-x = fm.get_shared_place_features(["p", "b", "m", "f", "v"])
-print x
-place_features = assess_place(fm.sort_place_features(x))
-print [f.full_string for f in place_features] #ideally should say +labial"""
 
