@@ -66,8 +66,7 @@ class FeaturesMatrix(object):
 
   def get_all_features(self, phoneme):
     phoneme_features_dict = self.phonemes_dict[phoneme]
-    features = [phoneme_features_dict[feature] + feature for feature in self.all_features if
-                phoneme_features_dict[feature] != "0"]
+    features = [phoneme_features_dict[feature] + feature for feature in self.all_features]
     return features
 
   def get_shared_features(self, phonemes=[]):
@@ -75,6 +74,24 @@ class FeaturesMatrix(object):
     for p in phonemes:
 		  shared.append(set(self.get_all_features(p)))
     return list(set.intersection(*shared))
+  """
+  def get_shared_features(self, phonemes=[]):
+    shared = []
+    out = []
+    for p in phonemes:
+		  shared.append(set(self.get_features(p)))
+
+    shared_set = set(shared)
+
+    feature_values = {}
+    for s in shared_set:
+      feature_values[s[1:]] = s
+
+    for f in self.all_features:
+      if f in feature_values.keys():
+        out.append(feature_values[f])
+      else:
+        out.append("0" + f)"""
 
   def get_shared_manner_features(self, phonemes=[]):
     shared = []
