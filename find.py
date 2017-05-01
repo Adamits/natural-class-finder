@@ -124,6 +124,11 @@ print assess_optimal(["a", "e"])
 print assess_optimal(["i", "e"])	# vowels
 print assess_optimal(["w", "j"])	# glides
 
+print "HW"
+print fm.get_shared_manner_features(["p", "b", "m"])
+print fm.get_shared_manner_features(["a", "e", "w", "j"])
+print [f.full_string for f in assess_manner(["a", "e", "w", "j"])]
+
 x = assess_manner(["f", "s"])	# fricatives
 print x[0].name
 print x[0].value
