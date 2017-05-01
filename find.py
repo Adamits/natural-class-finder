@@ -4,6 +4,7 @@ import random
 
 fm = FeaturesMatrix()
 
+
 # extracts necessary manner features
 def assess_manner(phonemes=[]):
   # Use Feature class
@@ -91,7 +92,36 @@ def assess_place(phonemes=[]):
     else:
       return features
 
+  # If parent is a dorsal, use this function
+  # To find the optimal set of child features
+  def dorsal(features):
+    neg_features = []
+    for feature in features:
+      # For English, we only care about high/low for consonants
+      if feature.name in ["high", "low"]:
+        # return the first high, low positive, as these identify
+        # velars and pharyngeals, respectively, uniquely
+        if feature.is_positive():
+          return [feature]
+        else:
+          neg_features.append(feature)
 
+    return neg_features
+
+  # If parent is a dorsal, use this function
+  # To find the optimal set of child features
+  def labial(features):
+    for feature in features:
+      # Catch +labiodental, which is contrastive
+      if feature.is_positive():
+        return [feature]
+
+    return features
+
+  # Store parents, catch segments like ? that need all 3 neg to identify,
+  # or w, which has multiple positive parent features
+  pos_parents = []
+  neg_parents = []
 
   for feature_string in fm.get_shared_place_features(phonemes):
     # Instantiate as a Feature object, described in features_matrix.py
@@ -102,36 +132,42 @@ def assess_place(phonemes=[]):
     # will be found before any of its children
     if feature.name in fm.place_tree["parents"]:
       if feature.is_positive():
-        pos_parent = feature
+        pos_parents.append(feature)
       else:
-        neg_parent = feature
+        neg_parents.append(feature)
 
-    # Get all the shared features within the parent that they share
-    if pos_parent and feature.name in fm.place_tree.get(pos_parent.name):
+    # Get all the shared features within the positive parents that they share
+    if pos_parents and feature.name in [f for pos_parent in pos_parents for f in fm.place_tree.get(pos_parent.name)]:
       features_to_compare.append(feature)
 
   # Return the children if there are any shared childern,
   # otherwise return the shared positive parent feature
   # lastly if there are no other shared features, return the shared negative feature
   if features_to_compare:
-    if pos_parent.name == "coronal":
-      return coronal(features_to_compare)
-    else:
-      return features_to_compare
-  elif pos_parent:
-    return [pos_parent]
-  elif neg_parent:
-    return [neg_parent]
+    for pos_parent in pos_parents:
+      if pos_parent.name == "coronal":
+        return coronal(features_to_compare)
+      elif pos_parent.name == "dorsal":
+        return dorsal(features_to_compare)
+      elif pos_parent.name == "labial":
+        return labial(features_to_compare)
+  elif pos_parents:
+    return pos_parents
+  elif neg_parents:
+    return neg_parents
   else:
     return []
+
 
 def assess_vowels(features):
   # for each in matrix, if any +, only return +, else return all -
   return [Feature(f) for f in fm.get_shared_vowel_features(features)]
 
+
 # extracts necessary voicing feature
 def assess_voice(features):
   return [Feature(f) for f in fm.get_shared_voice_features(features)]
+
 
 def assess_optimal(phonemes=[]):
   optimal = []
@@ -158,9 +194,17 @@ def assess_optimal(phonemes=[]):
 # Demonstrate usage of FeaturesMatrix
 # May still need to implement something for unicode
 
-print assess_optimal(["b", "p", "m"])
-print assess_optimal(["k", "g"])
-print assess_optimal(["i", "y"])
+print assess_optimal(["p", "t"])
+print assess_optimal(["p", "t", "k"])
+print assess_optimal(["θ", "f"])
+print assess_optimal(["f", "v"])
+print assess_optimal(["f", "b"])
+print assess_optimal(["e", "k"])
+print assess_optimal(["ʔ"])
+# Not sure if glides work
+print assess_optimal(["w", "j", "ɥ"])
+print assess_optimal(["h"])
+
 """
 for p in fm.phonemes:
   if "+coronal" in fm.get_place_features(p):
@@ -182,9 +226,9 @@ print assess_optimal(["ʃ"])
 print assess_optimal(["o"])
 
 
-print assess_manner(["m", "n"])	# nasals
-print assess_manner(["f", "s"])	# fricatives
-print assess_manner(["t", "k"])	# stops
+print assess_manner(["m", "n"]) # nasals
+print assess_manner(["f", "s"]) # fricatives
+print assess_manner(["t", "k"]) # stops
 
 """
 
