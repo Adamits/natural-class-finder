@@ -158,6 +158,8 @@ def assess_optimal(phonemes=[]):
 # Demonstrate usage of FeaturesMatrix
 # May still need to implement something for unicode
 
+print assess_optimal(["b", "p", "m"])
+print assess_optimal(["k", "g"])
 print assess_optimal(["i", "y"])
 """
 for p in fm.phonemes:
