@@ -5,16 +5,17 @@ fm = FeaturesMatrix()
 
 phonemetofeatures = fm._get_phonemes_dict()
 
-#featurestophonemes = dict((f,p) for p, f in phonemetofeatures.iteritems())
-#print featurestophonemes
+
+# featurestophonemes = dict((f,p) for p, f in phonemetofeatures.iteritems())
+# print featurestophonemes
 
 def findchange(a, b):
 	afeatures = fm.get_all_features(a)
 	bfeatures = fm.get_all_features(b)
-	#print afeatures, bfeatures
-	
+	# print afeatures, bfeatures
+
 	changedfeatures = []
-	
+
 	for i, afeature in enumerate(afeatures):
 		# features are different between two phonemes
 		if afeature != bfeatures[i]:
@@ -23,12 +24,10 @@ def findchange(a, b):
 				changedfeatures.append((a, afeature))
 			if afeature[0] == "-" and bfeatures[i][0] == "+":
 				changedfeatures.append((b, bfeatures[i]))
-				
+
 	changed_dict = {}
-	
 	for p, feature in changedfeatures:
-		changed_dict[p] = []
-		changed_dict[p].append(feature)
+		changed_dict.setdefault(p, []).append(feature)
 
 	return changed_dict
 

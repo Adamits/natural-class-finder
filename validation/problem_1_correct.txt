@@ -1,11 +1,11 @@
-ɯɤ  ɤ is ["-high"]
+ɯɤ  ɯ is ["+high"]
 ɑɒ  ɒ is ["+round"]
 jɥ  ɥ is ["+labial", "+round"]
-uy  y is ["+front", "-back"]
+uy  y is ["+front"], u is ["+back"]
 iy  y is ["+round"]
-iɪ  ɪ is ["-tense"]
+iɪ  i is ["+tense"]
 ðz  ð is ["+distributed"], z is ["+strident"]
-lɹ  ɹ is ["-distributed"], l is ["+lateral", "+consonantal"]
+lɹ  ɹ is ["+distributed"], l is ["+lateral", "+consonantal"]
 hʔ
 pt
 t͡st͡ʃ
