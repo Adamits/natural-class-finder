@@ -19,6 +19,7 @@ class FeaturesMatrix(object):
                     "dorsal", "high", "low", "front", "back"]
     self.vowel_features = ["round", "tense"]
     self.voice_features = ["voice"]
+    self.extra_features = ["tap", "trill", "nasal", "voice", "spread_gl", "constr_gl"]
     self.place_tree = {"parents": ["labial", "coronal", "dorsal"],
                        "labial": ["round", "labiodental"],
                        "coronal": ["anterior", "distributed", "strident", "lateral"],
@@ -42,8 +43,7 @@ class FeaturesMatrix(object):
 
   def get_manner_features(self, phoneme):
     phoneme_features_dict = self.phonemes_dict[phoneme]
-    features = [phoneme_features_dict[feature] + feature for feature in self.manner_features if
-                phoneme_features_dict[feature] != "0"]
+    features = [phoneme_features_dict[feature] + feature for feature in self.manner_features]
     return features
 
   def get_place_features(self, phoneme):
@@ -78,10 +78,27 @@ class FeaturesMatrix(object):
 
   def get_shared_manner_features(self, phonemes=[]):
     shared = []
+<<<<<<< HEAD
     
+=======
+    out = []
+>>>>>>> baf9b8d2e12d5c00bfd2abc77829fe2cf7da5983
     for p in phonemes:
 		  shared.append(set(self.get_manner_features(p)))
-    return self.sort_manner_features(list(set.intersection(*shared)))
+
+    shared_set = self.sort_manner_features(list(set.intersection(*shared)))
+
+    feature_values = {}
+    for s in shared_set:
+      feature_values[s[1:]] = s
+
+    for f in self.manner_features:
+      if f in feature_values.keys():
+        out.append(feature_values[f])
+      else:
+        out.append("0" + f)
+
+    return out
 
   def get_shared_place_features(self, phonemes=[]):
     shared = []

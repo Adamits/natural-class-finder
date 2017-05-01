@@ -3,18 +3,6 @@ from features_matrix import *
 
 fm = FeaturesMatrix()
 
-
-# main function
-def find_natural_class(phonemes=[]):
-  manner_features = assess_manner(phonemes)
-  if manner_features == ["+syllabic", "-consonantal"]:
-    print "CONSONANT"
-  else:
-    print "VOWEL"
-
-  return True
-
-
 # extracts necessary manner features
 def assess_manner(phonemes=[]):
   # Use Feature class
@@ -118,6 +106,8 @@ def assess_optimal(phonemes=[]):
 
   optimal.extend(manner)
   optimal.extend(place)
+
+  # Check if voicing is a necessary feature
   if not set(["-delayed_release", "-continuant", "-sonorant"]).isdisjoint([m.full_string for m in manner]):
     optimal.extend(voice)
 
@@ -130,23 +120,27 @@ def assess_optimal(phonemes=[]):
 print fm.get_shared_manner_features(['w', 'j', 'l'])
 print fm.get_shared_manner_features(["p", "b", "m"])
 print assess_manner(["t͡ʃ", "d͡ʒ"])
-"""
+
 print assess_optimal(["t", "k", "p"])
 print assess_optimal(["w", "j"])
+print assess_optimal(["a", "e"])
 
 
 print assess_optimal(["i", "e"])	# vowels
 print assess_optimal(["w", "j"])	# glides
 
+print "HW"
+print fm.get_shared_manner_features(["p", "b", "m"])
+print fm.get_shared_manner_features(["a", "e", "w", "j"])
+print [f.full_string for f in assess_manner(["a", "e", "w", "j"])]
+
 x = assess_manner(["f", "s"])	# fricatives
 print x[0].name
 print x[0].value
 print x[0].full_string
-"""
-"""
+
 print assess_manner(["m", "n"])	# nasals
 print assess_manner(["f", "s"])	# fricatives
 print assess_manner(["t", "k"])	# stops
 
-"""
 
