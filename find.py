@@ -62,17 +62,18 @@ def assess_manner(phonemes=[]):
 
     syllabic  consonantal   approximant   sonorant    continuant    delayed release     Expected output
 
-a, e, i   +     -       +       +       +       0         +syllabic
-w, j    -     - (+)     +       +       +       0         -syllabic, -consonantal
-l, r    -     + (-)     +       +       +       0         +consonantal, +approximant
-m, n    -     +   (-)     -       +       -       0         -approximant, +sonorant
-f, s    -     + (-)     -       -       +       +         -sonorant, +continuant
-affricate                                                 -continuant, +delayed release
-t, k    -     + (-)     -       -       -       -         -delayed_release
+a, e, i   +     -       		+       	+       	+      		 0         			+syllabic
+w, j    -     	- (+)     		+       	+       	+      		 0         			-syllabic, -consonantal
+l, r    -     	+ (-)     		+       	+       	+      		 0         			+consonantal, +approximant
+m, n    -     	+ (-)     		-       	+       	-       		0         		-approximant, +sonorant
+f, s    -     	+ (-)     		-       	-       	+       		+         		-sonorant, +continuant
+affricate                                                 								-continuant, +delayed release
+t, k    -     	+ (-)     		-       	-       	-       		-         		-delayed_release
 
 
-a, e, w, j  0     0       +       +       +       0         -consonantal
-w, j, l, r  -     0       0       +       +       0         -syllabic, +approximant
+a, e, w, j  0     - (+)       	+       	+       	+       		0         		-consonantal
+w, j, l, r  -     0       		+       	+       	+       		0         		-syllabic, +approximant
+p, b, m		-	+ (-)			-			0			-				0				-continuant
 
 """
 
@@ -126,7 +127,10 @@ def assess_optimal(phonemes=[]):
 # Demonstrate usage of FeaturesMatrix
 # May still need to implement something for unicode
 
-
+print fm.get_shared_manner_features(['w', 'j', 'l'])
+print fm.get_shared_manner_features(["p", "b", "m"])
+print assess_manner(["t͡ʃ", "d͡ʒ"])
+"""
 print assess_optimal(["t", "k", "p"])
 print assess_optimal(["w", "j"])
 
@@ -138,6 +142,7 @@ x = assess_manner(["f", "s"])	# fricatives
 print x[0].name
 print x[0].value
 print x[0].full_string
+"""
 """
 print assess_manner(["m", "n"])	# nasals
 print assess_manner(["f", "s"])	# fricatives
