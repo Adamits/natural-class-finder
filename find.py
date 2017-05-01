@@ -22,7 +22,6 @@ def assess_manner(phonemes=[]):
 
 	
 	if shared_num >= 5:  # all major manner features same, vowel/glide/liquid/nasal/fricative/affricate/stop
-		print "Entered single class"
 		if shared_features[0].is_positive():  # +syllabic
 			efficient_features.append(shared_features[0])
 			return efficient_features
@@ -47,9 +46,7 @@ def assess_manner(phonemes=[]):
 			efficient_features.append(feature2)
 
 	if shared_num < 5: # covers two classes or more
-		print "Entered two or more classes"
 		zero_counter = min([i for i, x in enumerate(shared_features) if x.is_zero()==True])
-		print "zero_counter is ", zero_counter
 		
 		efficient_features.append(shared_features[zero_counter+1])
 		if zero_counter >= 0 and zero_counter < 3:
@@ -177,9 +174,48 @@ def assess_place(phonemes=[]):
     return []
 
 
-def assess_vowels(features):
+def assess_vowels(phonemes=[]):
+  matrix = fm.vowel_matrix_dict
   # for each in matrix, if any +, only return +, else return all -
-  return [Feature(f) for f in fm.get_shared_vowel_features(features)]
+  features =[Feature(f) for f in fm.get_shared_vowel_features(phonemes)]
+  left = []
+  top = []
+  round = []
+  ret_features = []
+  for feature in features:
+    # Start with features in left column of matrix
+    if feature.name in matrix["left"]:
+      left.append(feature)
+    elif feature.name in matrix["top"]:
+      top.append(feature)
+    elif feature.name == "round":
+      round.append(feature)
+
+  #LEFT FEATURES:
+  # Low only matters if it is +low
+  for feature in left:
+    if feature.name == "low":
+      ret_features.append(feature) if feature.is_positive() else ""
+    else:
+      ret_features.append(feature)
+
+  #TOP FEATURES:
+  # only care about positive, if no positive
+  # return both negative
+  top_pos = []
+  for feature in top:
+    if feature.is_positive():
+      top_pos.append(feature)
+
+  if top_pos:
+    ret_features += top_pos
+  else:
+    ret_features += top
+
+  #ROUND
+  # lets try always returning round if it is a shared feature
+  return ret_features + round if round else ret_features
+
 
 
 # extracts necessary voicing feature
@@ -197,7 +233,7 @@ def assess_optimal(phonemes=[]):
   optimal.extend(manner)
 
   # Assess vowels seperately from consonants regarding place
-  if "+syllabic" in [f.full_string for f in optimal] and "+consonan" not in [f.full_string for f in optimal]:
+  if "+syllabic" in [f.full_string for f in optimal] and "+consonantal" not in [f.full_string for f in optimal]:
     optimal.extend(vowel)
   else:
     optimal.extend(place)
@@ -211,6 +247,16 @@ def assess_optimal(phonemes=[]):
 
 # Demonstrate usage of FeaturesMatrix
 
+##########Vowels##########
+
+print assess_optimal(["a"])
+print assess_optimal(["e"])
+print assess_optimal(["a", "e"])
+print assess_optimal(["i", "y", "ɪ", "ʏ"])
+print assess_optimal(["ɪ"])
+
+##########################
+"""
 print assess_optimal(["l"])
 print assess_optimal(["m", "n"])	# nasals
 print assess_optimal(["f", "s"])	# fricatives
@@ -221,3 +267,4 @@ print assess_optimal(["t", "k"]) # stops
 print assess_optimal(['w', 'j', 'l'])
 print assess_optimal(["p", "b", "m"])
 print assess_optimal(["t͡ʃ", "d͡ʒ"])
+"""
