@@ -78,11 +78,7 @@ class FeaturesMatrix(object):
 
   def get_shared_manner_features(self, phonemes=[]):
     shared = []
-<<<<<<< HEAD
-    
-=======
     out = []
->>>>>>> baf9b8d2e12d5c00bfd2abc77829fe2cf7da5983
     for p in phonemes:
 		  shared.append(set(self.get_manner_features(p)))
 
@@ -155,6 +151,9 @@ class Feature(object):
 
   def is_negative(self):
     return self.value == "-"
+    
+  def is_zero(self):
+	  return self.value == "0"
 
   def make_positive(self):
     self.value = "+"
@@ -165,3 +164,14 @@ class Feature(object):
     self.value = "-"
     self.full_string = self.value + self.name
     return self
+
+  def make_opposite(self):
+	#print "Entered make opposite"
+	if self.value == "+":
+		self.make_negative()
+		return self
+	if self.value == "-":
+		self.make_positive()
+	else:
+		return
+	return self

@@ -5,45 +5,62 @@ fm = FeaturesMatrix()
 
 # extracts necessary manner features
 def assess_manner(phonemes=[]):
-  # Use Feature class
-  shared_features = [Feature(f) for f in fm.get_shared_manner_features(phonemes)]
+	# Use Feature class
+	shared_features = [Feature(f) for f in fm.get_shared_manner_features(phonemes)]
+	shared_features[1].make_opposite() # have to flip consonantal feature momentarily :P	
 
-  all_manner_features = fm.get_all_manner_features()
+	all_manner_features = fm.get_all_manner_features()
 
-  efficient_features = []
+	efficient_features = []
+	
+	shared_num = 5
+	for x in range(0, 4):
+		if shared_features[x].is_zero():
+			shared_num -= 1
 
-  if len(shared_features) >= 5:  # all major manner features same, vowel/glide/liquid/nasal/fricative/affricate/stop
-    shared_features[1].value = not shared_features[1].value  # have to flip consonantal feature momentarily :P
+	
+	if shared_num >= 5:  # all major manner features same, vowel/glide/liquid/nasal/fricative/affricate/stop
+		print "Entered single class"
+		if shared_features[0].is_positive():  # +syllabic
+			efficient_features.append(shared_features[0])
+			return efficient_features
+		else:
+			negative_counter = 0  # marks where overlap is
+			for i, x in enumerate(shared_features):
+				negative_counter = 5  # set default
+				if x.is_positive():
+					negative_counter = i
+					break
+			#print "negative counter is: ", negative_counter
+			if negative_counter == 5:  # reached end of chart, nothing +, stop
+				efficient_features.append(Feature("-delayed_release"))
+				return efficient_features
 
-    if shared_features[0].is_positive():  # +syllabic
-      efficient_features.append(shared_features[0])
-      return efficient_features
-    else:
-      negative_counter = 0  # marks where overlap is
-      for i, x in enumerate(shared_features):
-        negative_counter = 5  # set default
-        if x.is_positive():
-          negative_counter = i
-          break
+			#print [f.full_string for f in shared_features]
+			feature1 = shared_features[negative_counter - 1]
+			feature2 = shared_features[negative_counter]
+			#print feature1.full_string, feature2.full_string
 
-      if negative_counter == 5:  # reached end of chart, nothing +, stop
-        efficient_features.append(Feature("-delayed_release"))
-        return efficient_features
+			efficient_features.append(feature1)
+			efficient_features.append(feature2)
 
-      feature1 = all_manner_features[negative_counter - 1].make_negative()
-      feature2 = all_manner_features[negative_counter].make_positive()
+	if shared_num < 5: # covers two classes or more
+		print "Entered two or more classes"
+		zero_counter = min([i for i, x in enumerate(shared_features) if x.is_zero()==True])
+		print "zero_counter is ", zero_counter
+		
+		efficient_features.append(shared_features[zero_counter+1])
+		if zero_counter >= 0 and zero_counter < 3:
+			for x in shared_features[:zero_counter]:
+				if x.is_negative():
+					efficient_features.append(x)
+			#efficient_features.append(shared_features[zero_counter-1])
+			
+	for x in efficient_features:
+		if x.name == "consonantal":
+			x.make_opposite() # swapping back consonantal values bs
 
-      efficient_features.append(feature1)
-      efficient_features.append(feature2)
-
-  for i, x in enumerate(efficient_features):
-    if x.name == "consonantal":  # swapping back consonantal values bs
-      if x.is_positive():
-        efficient_features[i] = x.make_negative()
-      else:
-        efficient_features[i] = x.make_positive()
-
-  return efficient_features
+	return efficient_features
 
 
 """
@@ -117,21 +134,20 @@ def assess_optimal(phonemes=[]):
 # Demonstrate usage of FeaturesMatrix
 # May still need to implement something for unicode
 
-print fm.get_shared_manner_features(['w', 'j', 'l'])
-print fm.get_shared_manner_features(["p", "b", "m"])
-print assess_manner(["t͡ʃ", "d͡ʒ"])
 
+"""
 print assess_optimal(["t", "k", "p"])
 print assess_optimal(["w", "j"])
 print assess_optimal(["a", "e"])
 
+print assess_optimal(["l"])
+"""
 
-print assess_optimal(["i", "e"])	# vowels
-print assess_optimal(["w", "j"])	# glides
+print assess_optimal(["p", "b", "m"])
+print assess_optimal(["a", "e", "w", "j"])
+print assess_optimal(["w", "j", "l", "r"])
 
-print "HW"
-print fm.get_shared_manner_features(["p", "b", "m"])
-print fm.get_shared_manner_features(["a", "e", "w", "j"])
+"""
 print [f.full_string for f in assess_manner(["a", "e", "w", "j"])]
 
 x = assess_manner(["f", "s"])	# fricatives
@@ -144,3 +160,7 @@ print assess_manner(["f", "s"])	# fricatives
 print assess_manner(["t", "k"])	# stops
 
 
+print assess_manner(['w', 'j', 'l'])
+print assess_manner(["p", "b", "m"])
+print assess_manner(["t͡ʃ", "d͡ʒ"])
+"""
