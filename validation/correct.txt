@@ -1,0 +1,17 @@
+ɯɤ  ɤ is ["-high"]
+ɑɒ  ɒ is ["+round"]
+jɥ  ɥ is ["+labial", "+round"]
+uy  y is ["+front", "-back"]
+iy  y is ["+round"]
+iɪ  ɪ is ["-tense"]
+ðz  ð is ["+distributed"], z is ["+strident"]
+lɹ  ɹ is ["-distributed"], l is ["+lateral", "+consonantal"]
+hʔ
+pt
+t͡st͡ʃ
+uw
+t̪͡θt͡s
+vβ
+mb
+χx
+ʁʕ

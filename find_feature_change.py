@@ -29,7 +29,7 @@ def findchange(a, b):
 	for p, feature in changedfeatures:
 		changed_dict[p] = []
 		changed_dict[p].append(feature)
-		
+
 	return changed_dict
 
 
