@@ -37,6 +37,8 @@ class FeaturesMatrix(object):
     matrix = [row.split(' ') for row in self.basefeatures_text.split('\n')]
     for row in matrix[1:]:
       # At each row, store phone as key, and list of key/value pairs of label and +/-/0
+      #print row[0]
+      #print [row[0]]
       phonemes_dict[row[0]] = dict(zip(self.all_features, row[1:]))
 
     return phonemes_dict

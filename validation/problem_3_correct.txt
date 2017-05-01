@@ -1,0 +1,11 @@
+i y ["+front", "+high", "+tense"]
+i y ɰ u
+o ɔ
+e ʌ
+ʌ a
+p t
+p t k
+p b m
+k g x ŋ
+θ s
+n l r

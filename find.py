@@ -7,59 +7,58 @@ fm = FeaturesMatrix()
 
 # extracts necessary manner features
 def assess_manner(phonemes=[]):
-	# Use Feature class
-	shared_features = [Feature(f) for f in fm.get_shared_manner_features(phonemes)]
-	shared_features[1].make_opposite() # have to flip consonantal feature momentarily :P	
+  # Use Feature class
+  shared_features = [Feature(f) for f in fm.get_shared_manner_features(phonemes)]
+  shared_features[1].make_opposite()  # have to flip consonantal feature momentarily :P
 
-	all_manner_features = fm.get_all_manner_features()
+  all_manner_features = fm.get_all_manner_features()
 
-	efficient_features = []
-	
-	shared_num = 5
-	for x in range(0, 4):
-		if shared_features[x].is_zero():
-			shared_num -= 1
+  efficient_features = []
 
-	
-	if shared_num >= 5:  # all major manner features same, vowel/glide/liquid/nasal/fricative/affricate/stop
-		if shared_features[0].is_positive():  # +syllabic
-			efficient_features.append(shared_features[0])
-			return efficient_features
-		else:
-			negative_counter = 0  # marks where overlap is
-			for i, x in enumerate(shared_features):
-				negative_counter = 5  # set default
-				if x.is_positive():
-					negative_counter = i
-					break
-			#print "negative counter is: ", negative_counter
-			if negative_counter == 5:  # reached end of chart, nothing +, stop
-				efficient_features.append(Feature("-delayed_release"))
-				return efficient_features
+  shared_num = 5
+  for x in range(0, 4):
+    if shared_features[x].is_zero():
+      shared_num -= 1
 
-			#print [f.full_string for f in shared_features]
-			feature1 = shared_features[negative_counter - 1]
-			feature2 = shared_features[negative_counter]
-			#print feature1.full_string, feature2.full_string
+  if shared_num >= 5:  # all major manner features same, vowel/glide/liquid/nasal/fricative/affricate/stop
+    if shared_features[0].is_positive():  # +syllabic
+      efficient_features.append(shared_features[0])
+      return efficient_features
+    else:
+      negative_counter = 0  # marks where overlap is
+      for i, x in enumerate(shared_features):
+        negative_counter = 5  # set default
+        if x.is_positive():
+          negative_counter = i
+          break
+      # print "negative counter is: ", negative_counter
+      if negative_counter == 5:  # reached end of chart, nothing +, stop
+        efficient_features.append(Feature("-delayed_release"))
+        return efficient_features
 
-			efficient_features.append(feature1)
-			efficient_features.append(feature2)
+      # print [f.full_string for f in shared_features]
+      feature1 = shared_features[negative_counter - 1]
+      feature2 = shared_features[negative_counter]
+      # print feature1.full_string, feature2.full_string
 
-	if shared_num < 5: # covers two classes or more
-		zero_counter = min([i for i, x in enumerate(shared_features) if x.is_zero()==True])
-		
-		efficient_features.append(shared_features[zero_counter+1])
-		if zero_counter >= 0 and zero_counter < 3:
-			for x in shared_features[:zero_counter]:
-				if x.is_negative():
-					efficient_features.append(x)
-			#efficient_features.append(shared_features[zero_counter-1])
-			
-	for x in efficient_features:
-		if x.name == "consonantal":
-			x.make_opposite() # swapping back consonantal values bs
+      efficient_features.append(feature1)
+      efficient_features.append(feature2)
 
-	return efficient_features
+  if shared_num < 5:  # covers two classes or more
+    zero_counter = min([i for i, x in enumerate(shared_features) if x.is_zero() == True])
+
+    efficient_features.append(shared_features[zero_counter + 1])
+    if zero_counter >= 0 and zero_counter < 3:
+      for x in shared_features[:zero_counter]:
+        if x.is_negative():
+          efficient_features.append(x)
+          # efficient_features.append(shared_features[zero_counter-1])
+
+  for x in efficient_features:
+    if x.name == "consonantal":
+      x.make_opposite()  # swapping back consonantal values bs
+
+  return efficient_features
 
 
 """
@@ -177,7 +176,7 @@ def assess_place(phonemes=[]):
 def assess_vowels(phonemes=[]):
   matrix = fm.vowel_matrix_dict
   # for each in matrix, if any +, only return +, else return all -
-  features =[Feature(f) for f in fm.get_shared_vowel_features(phonemes)]
+  features = [Feature(f) for f in fm.get_shared_vowel_features(phonemes)]
   left = []
   top = []
   round = []
@@ -191,7 +190,7 @@ def assess_vowels(phonemes=[]):
     elif feature.name == "round":
       round.append(feature)
 
-  #LEFT FEATURES:
+  # LEFT FEATURES:
   # Low only matters if it is +low
   for feature in left:
     if feature.name == "low":
@@ -199,7 +198,7 @@ def assess_vowels(phonemes=[]):
     else:
       ret_features.append(feature)
 
-  #TOP FEATURES:
+  # TOP FEATURES:
   # only care about positive, if no positive
   # return both negative
   top_pos = []
@@ -212,10 +211,9 @@ def assess_vowels(phonemes=[]):
   else:
     ret_features += top
 
-  #ROUND
+  # ROUND
   # lets try always returning round if it is a shared feature
   return ret_features + round if round else ret_features
-
 
 
 # extracts necessary voicing feature

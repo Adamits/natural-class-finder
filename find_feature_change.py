@@ -31,7 +31,7 @@ def findchange(a, b):
 
 	return changed_dict
 
-
+"""
 print "The contrastive features between ɯ and ɤ are: ", findchange("ɯ", "ɤ")
 print "The contrastive features between ɑ and ɒ are: ", findchange("ɑ", "ɒ")
 print "The contrastive features between j and ɥ are: ", findchange("j", "ɥ")
@@ -53,3 +53,4 @@ print "The contrastive features between ʁ and ʕ are: ", findchange("ʁ", "ʕ")
 #print "The contrastive features between k and kw are: ", findchange("k", "kw")
 #print "The contrastive features between w and pw are: ", findchange("w", "pw")
 #print "The contrastive features between u and y are: ", findchange("u", "y")
+"""
