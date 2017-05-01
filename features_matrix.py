@@ -17,15 +17,17 @@ class FeaturesMatrix(object):
 
     self.place_features = ["labial", "round", "labiodental", "coronal", "anterior", "distributed", "strident", "lateral",
                     "dorsal", "high", "low", "front", "back"]
-    self.vowel_features = ["round", "tense"]
+    self.vowel_features = ["dorsal", "high", "low", "front", "back", "round", "tense"]
     self.voice_features = ["voice"]
     self.extra_features = ["tap", "trill", "nasal", "voice", "spread_gl", "constr_gl"]
     self.place_tree = {"parents": ["labial", "coronal", "dorsal"],
                        "labial": ["round", "labiodental"],
                        "coronal": ["anterior", "distributed", "strident", "lateral"],
                        "dorsal": ["high", "low", "front", "back"]}
+    self.vowel_matrix = [["high", "low", "tense"], ["front", "back", "round"]]
     self.basefeatures_text = open(basefeatures_path).read()
     self.phonemes_dict = self._get_phonemes_dict()
+    self.phonemes = self.phonemes_dict.keys()
 
   def _get_phonemes_dict(self):
     phonemes_dict = {}
@@ -123,7 +125,7 @@ class FeaturesMatrix(object):
     shared = []
     for p in phonemes:
 		  shared.append(set(self.get_vowel_features(p)))
-    return list(set.intersection(*shared))
+    return self.sort_vowel_features(list(set.intersection(*shared)))
     
   def get_shared_voice_features(self, phonemes=[]):
     shared = []
@@ -152,6 +154,19 @@ class FeaturesMatrix(object):
       input_features_dict[feature[1:]] = feature
 
     for ordered_feature in self.place_features:
+      if input_features_dict.get(ordered_feature):
+        output_features.append(input_features_dict[ordered_feature])
+
+    return output_features
+
+  def sort_vowel_features(self, features):
+    input_features_dict = {}
+    output_features = []
+
+    for feature in features:
+      input_features_dict[feature[1:]] = feature
+
+    for ordered_feature in self.vowel_features:
       if input_features_dict.get(ordered_feature):
         output_features.append(input_features_dict[ordered_feature])
 
