@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from features_matrix import *
+import random
 
 fm = FeaturesMatrix()
 
@@ -68,7 +69,29 @@ w, j, l, r  -     0       0       +       +       0         -syllabic, +approxim
 # extracts necessary place features
 def assess_place(phonemes=[]):
   features_to_compare = []
-  parent = None
+  pos_parent = None
+  neg_parent = None
+
+  # If parent is a coronal, use this function
+  # To find the optimal set of child features
+  def coronal(features):
+    # only return 2 features for coronal
+    MAX_FEATURES = 2
+    for f in features:
+      # If it is lateral, we only need that (we are assuming English)
+      if f.full_string == "+lateral":
+        return [f]
+      # If -lateral, GET IT OUTTA HERE!
+      # -lateral will never tell us anything useful in English
+      elif f.full_string == "-lateral":
+        features.remove(f)
+    # return MAX_FEATURES random features, I believe which ones is inconsequential
+    if len(features) > MAX_FEATURES:
+      return list(random.sample(set(features), MAX_FEATURES))
+    else:
+      return features
+
+
 
   for feature_string in fm.get_shared_place_features(phonemes):
     # Instantiate as a Feature object, described in features_matrix.py
@@ -77,38 +100,53 @@ def assess_place(phonemes=[]):
     # Assumption is that each shared feature set can only possibly have one 'parent'
     # place feature, and that given the order that we are assessing features, the parent
     # will be found before any of its children
-    if feature.name in fm.place_tree["parents"] and feature.is_positive():
-      parent = feature
+    if feature.name in fm.place_tree["parents"]:
+      if feature.is_positive():
+        pos_parent = feature
+      else:
+        neg_parent = feature
 
     # Get all the shared features within the parent that they share
-    if parent and feature.name in fm.place_tree.get(parent.name):
+    if pos_parent and feature.name in fm.place_tree.get(pos_parent.name):
       features_to_compare.append(feature)
+
+  # Return the children if there are any shared childern,
+  # otherwise return the shared positive parent feature
+  # lastly if there are no other shared features, return the shared negative feature
   if features_to_compare:
-    return features_to_compare
-  elif parent:
-    return [parent]
+    if pos_parent.name == "coronal":
+      return coronal(features_to_compare)
+    else:
+      return features_to_compare
+  elif pos_parent:
+    return [pos_parent]
+  elif neg_parent:
+    return [neg_parent]
   else:
     return []
 
-
-def assess_vowels(phonemes):
-  return [Feature(f) for f in fm.get_shared_vowel_features(phonemes)]
-
+def assess_vowels(features):
+  # for each in matrix, if any +, only return +, else return all -
+  return [Feature(f) for f in fm.get_shared_vowel_features(features)]
 
 # extracts necessary voicing feature
 def assess_voice(features):
   return [Feature(f) for f in fm.get_shared_voice_features(features)]
 
-
-
 def assess_optimal(phonemes=[]):
   optimal = []
   manner = assess_manner(phonemes)
   place = assess_place(phonemes)
+  vowel = assess_vowels(phonemes)
   voice = assess_voice(phonemes)
 
   optimal.extend(manner)
-  optimal.extend(place)
+
+  # Assess vowels seperately from consonants regarding place
+  if "+syllabic" in [f.full_string for f in optimal] and "+consonan" not in [f.full_string for f in optimal]:
+    optimal.extend(vowel)
+  else:
+    optimal.extend(place)
 
   # Check if voicing is a necessary feature
   if not set(["-delayed_release", "-continuant", "-sonorant"]).isdisjoint([m.full_string for m in manner]):
@@ -120,20 +158,28 @@ def assess_optimal(phonemes=[]):
 # Demonstrate usage of FeaturesMatrix
 # May still need to implement something for unicode
 
+print assess_optimal(["i", "y"])
+"""
+for p in fm.phonemes:
+  if "+coronal" in fm.get_place_features(p):
+    print unicode(p, "utf-8")
+
+
 print assess_optimal(["t", "k", "p"])
 print assess_optimal(["w", "j"])
 print assess_optimal(["a", "e"])
 
+print [f.full_string for f in assess_place(["p", "b", "m"])]
+print [f.full_string for f in assess_place(["k", "b", "x", "ŋ"])]
+print [f.full_string for f in assess_place(["n", "l", "r"])]
+print [f.full_string for f in assess_place(["w"])]
+print [f.full_string for f in assess_place(["o"])]
+print [f.full_string for f in assess_place(["i", "y"])]
+print [f.full_string for f in assess_place(["i", "y"])]
+print assess_optimal(["ʃ"])
+print assess_optimal(["o"])
 
-print assess_optimal(["i", "e"])	# vowels
-print assess_optimal(["w", "j"])	# glides
 
-
-x = assess_manner(["f", "s"])	# fricatives
-print x[0].name
-print x[0].value
-print x[0].full_string
-"""
 print assess_manner(["m", "n"])	# nasals
 print assess_manner(["f", "s"])	# fricatives
 print assess_manner(["t", "k"])	# stops

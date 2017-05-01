@@ -17,15 +17,17 @@ class FeaturesMatrix(object):
 
     self.place_features = ["labial", "round", "labiodental", "coronal", "anterior", "distributed", "strident", "lateral",
                     "dorsal", "high", "low", "front", "back"]
-    self.vowel_features = ["round", "tense"]
+    self.vowel_features = ["dorsal", "high", "low", "front", "back", "round", "tense"]
     self.voice_features = ["voice"]
     self.extra_features = ["tap", "trill", "nasal", "voice", "spread_gl", "constr_gl"]
     self.place_tree = {"parents": ["labial", "coronal", "dorsal"],
                        "labial": ["round", "labiodental"],
                        "coronal": ["anterior", "distributed", "strident", "lateral"],
                        "dorsal": ["high", "low", "front", "back"]}
+    self.vowel_matrix = [["high", "low", "tense"], ["front", "back", "round"]]
     self.basefeatures_text = open(basefeatures_path).read()
     self.phonemes_dict = self._get_phonemes_dict()
+    self.phonemes = self.phonemes_dict.keys()
 
   def _get_phonemes_dict(self):
     phonemes_dict = {}
