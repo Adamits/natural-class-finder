@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from features_matrix import *
-import itertools
 
 fm = FeaturesMatrix()
 
