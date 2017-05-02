@@ -1,11 +1,11 @@
-i y ["+front", "+high", "+tense"]
-i y ɰ u
-o ɔ
-e ʌ
-ʌ a
-p t
-p t k
-p b m
-k g x ŋ
-θ s
-n l r
+i y ~ ["+front", "+high", "+tense"]
+i y ɰ u ~ ["+high", "+tense"]
+o ɔ ~ ["+back", "+round", "-high", "-low"]
+e ʌ ~ [ "-high", "-low", "-round"]
+ʌ a ~ ["-high", "-front", "-round"]
+p t ~ ["-delayed_release", "-dorsal", "-voice"]
+p t k ~ ["-delayed_release", "-voice"]
+p b m ~ ["-continuant", "-round", "-labiodental"]
+k g x ŋ ~ ["-approximant", "+high"]
+θ s ~ ["+continuant", "+anterior", "-voice"]
+n l r ~ [""]

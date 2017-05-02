@@ -12,7 +12,7 @@ def guess_problem_1():
   def format_guess_1(guess_dict, chars=[]):
     ret = "%s %s" % (chars[0], chars[1])
     for char, guess_list in guess_dict.iteritems():
-      ret += "~%s is %s" % (char, guess_list)
+      ret += " ~ %s is %s" % (char, guess_list)
 
     return ret
 
@@ -26,12 +26,12 @@ def guess_problem_1():
 
 
 def guess_problem_3():
-  lines = [line.strip() for line in open("./validation/problem_1_dev")]
+  lines = [line.strip() for line in open("./validation/problem_3_dev.txt")]
   guesses_log_list = []
 
   def format_guess_3(guess_list, chars=[]):
     ret = " ".join(chars)
-    ret += "~%s" % guess_list
+    ret += " ~ %s" % guess_list
 
     return ret
 
