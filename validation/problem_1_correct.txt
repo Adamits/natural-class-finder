@@ -1,17 +1,17 @@
-ɯ ɤ   ɯ is ["+high"]
-ɑ ɒ   ɒ is ["+round"]
-j ɥ   ɥ is ["+labial", "+round"]
-u y   y is ["+front"], u is ["+back"]
-i y   y is ["+round"]
-i ɪ   i is ["+tense"]
-ð z   ð is ["+distributed"],    z is ["+strident"]
-l ɹ   ɹ is ["+distributed"],    l is ["+lateral", "+consonantal"]
-h ʔ   ʔ is ["+constr_gl"],  h is ["+spread_gl", "+continuant"]
-p t
-t͡s t͡ʃ
-u w
-t̪͡θ t͡s
-v β
-m b
-χ x
-ʁ ʕ
+ɯ ɤ~ɯ is ['+high']
+ɑ ɒ~ɒ is ['+round']
+j ɥ~ɥ is ['+labial', '+round']
+u y~y is ['+front']~u is ['+back']
+i y~y is ['+round']
+i ɪ~i is ['+tense']
+ð z~ð is ['+distributed']~z is ['+strident']
+l ɹ~ɹ is ['+distributed']~l is ['+lateral', '+consonantal']
+h ʔ~ʔ is ['+constr_gl']~h is ['+spread_gl', '+continuant']
+p t~
+t͡s t͡~ʃ
+u w~
+t̪͡θ t͡s~
+v β~
+m b~
+χ x~
+ʁ ʕ~

@@ -12,7 +12,7 @@ def guess_problem_1():
   def format_guess_1(guess_dict, chars=[]):
     ret = "%s %s" % (chars[0], chars[1])
     for char, guess_list in guess_dict.iteritems():
-      ret += "\t%s is %s" % (char, guess_list)
+      ret += "~%s is %s" % (char, guess_list)
 
     return ret
 
@@ -31,7 +31,7 @@ def guess_problem_3():
 
   def format_guess_3(guess_list, chars=[]):
     ret = " ".join(chars)
-    ret += "\t%s" % guess_list
+    ret += "~%s" % guess_list
 
     return ret
 
@@ -44,3 +44,30 @@ def guess_problem_3():
 
 guess_problem_1()
 guess_problem_3()
+
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+
+def score_problem_1():
+  correct_lines = [line.strip() for line in open("./validation/problem_1_correct.txt")]
+  guess_lines = [line.strip() for line in open("./validation/problem_1_guesses.txt")]
+
+  preds = [line.split("~")[1] for line in guess_lines]
+  true = [line.split("~")[1] for line in correct_lines]
+  print preds
+  print true
+
+  print "accuracy for problem 1 is %s" % accuracy_score(true, preds)
+  print "precision for problem 1 is %s" % precision_score(true, preds)
+  print "recall for problem 1 is %s" % recall_score(true, preds)
+  print "f1 for problem 1 is %s" % f1_score(true, preds)
+
+
+def score_problem_3():
+  correct_lines = [line.strip() for line in open("./validation/problem_3_correct.txt")]
+  guess_lines = [line.strip() for line in open("./validation/problem_3_guesses.txt")]
+
+  preds = [line.split("~")[1:] for line in guess_lines]
+  true = [line.split("~")[1:] for line in correct_lines]
+  accuracy_score(true, preds)
+
+score_problem_1()
