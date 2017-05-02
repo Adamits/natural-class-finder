@@ -55,6 +55,7 @@ def score_problem_1():
   true = [line.split("~")[1] for line in correct_lines]
 
   print "accuracy for problem 1 is %s" % accuracy_score(true, preds)
+  print "%d wrong!" % (len(preds) - accuracy_score(true, preds, normalize=False))
 
 
 def score_problem_3():
@@ -67,6 +68,7 @@ def score_problem_3():
   print true
 
   print "accuracy for problem 3 is %s" % accuracy_score(true, preds)
+  print "%d wrong!" % (len(preds) - accuracy_score(true, preds, normalize=False))
 
 score_problem_1()
 score_problem_3()

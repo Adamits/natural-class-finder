@@ -86,6 +86,8 @@ def assess_manner(phonemes=[]):
     if x.name == "consonantal":
       x.make_opposite()  # swapping back consonantal values
 
+  print [f.full_string for f in shared_features]
+  print shared_num
   return [f for f in efficient_features if not f.is_zero()]
 
 
@@ -110,7 +112,7 @@ p, b, m		-	+ (-)			-			0			-				0				-continuant
 
 
 # extracts necessary place features
-def assess_place(phonemes=[]):
+def assess_place(manner, phonemes=[]):
   features_to_compare = []
   pos_parent = None
   neg_parent = None
@@ -126,6 +128,9 @@ def assess_place(phonemes=[]):
       # -lateral will never tell us anything useful in English
       elif f.full_string == "-lateral":
         features.remove(f)
+      elif f.name == "strident":
+        if not is_fricative_or_affricate(manner):
+          features.remove(f)
 
     return features
 
@@ -258,7 +263,7 @@ def assess_voice(features):
 def assess_optimal(phonemes=[]):
   optimal = []
   manner = assess_manner(phonemes)
-  place = assess_place(phonemes)
+  place = assess_place(manner, phonemes)
   vowel = assess_vowels(phonemes)
   voice = assess_voice(phonemes)
 
@@ -276,10 +281,16 @@ def assess_optimal(phonemes=[]):
 
   return [o.full_string for o in optimal]
 
+def is_fricative_or_affricate(features):
+  feature_strings = [f.full_string for f in features]
+  return '-sonorant' in feature_strings or ("-continuant" in feature_strings and "+delayed_release" in feature_strings)
+
+
 
 # Demonstrate usage of FeaturesMatrix
-
-print assess_optimal(["t", "d"])
+print assess_optimal(["n", "l", "r"])
+"""
+print assess_optimal(["t", "d", "n"])
 print assess_optimal(["s", "z"])
 print assess_optimal(["t", "d", "s", "z"])
 print assess_optimal(["ɹ"])
@@ -288,7 +299,7 @@ print assess_optimal(["ð", "θ", "d͡ʒ", "t͡ʃ", "t͡s", "ʃ", "s", "z", "n",
 print assess_optimal(["ð", "θ"])# "d͡ʒ", "t͡ʃ", "t͡s", "ʃ", "s", "z", "n", "l", "ɹ", "ɾ"])
 print assess_optimal(["d͡ʒ", "t͡ʃ"])
 print assess_optimal(["i", "y", "ɰ", "u"])
-"""
+
 ##########Vowels##########
 
 print assess_optimal(["i", "y", "ɰ", "u"])
