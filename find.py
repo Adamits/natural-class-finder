@@ -90,8 +90,6 @@ def assess_place(phonemes=[]):
   # If parent is a coronal, use this function
   # To find the optimal set of child features
   def coronal(features):
-    # only return 2 features for coronal
-    MAX_FEATURES = 2
     for f in features:
       # If it is lateral, we only need that (we are assuming English)
       if f.full_string == "+lateral":
@@ -100,11 +98,8 @@ def assess_place(phonemes=[]):
       # -lateral will never tell us anything useful in English
       elif f.full_string == "-lateral":
         features.remove(f)
-    # return MAX_FEATURES random features, I believe which ones is inconsequential
-    if len(features) > MAX_FEATURES:
-      return list(random.sample(set(features), MAX_FEATURES))
-    else:
-      return features
+
+    return features
 
   # If parent is a dorsal, use this function
   # To find the optimal set of child features
@@ -122,7 +117,7 @@ def assess_place(phonemes=[]):
 
     return neg_features
 
-  # If parent is a dorsal, use this function
+  # If parent is a labial, use this function
   # To find the optimal set of child features
   def labial(features):
     for feature in features:
@@ -244,7 +239,13 @@ def assess_optimal(phonemes=[]):
 
 
 # Demonstrate usage of FeaturesMatrix
-
+print assess_optimal(["t", "d"])
+print assess_optimal(["t", "d", "s", "z"])
+#"ð", "θ", "d͡ʒ", "t͡ʃ", "t͡s", "ʃ", "s", "z", "n", "l", "ɹ", "ɾ"
+print assess_optimal(["ð", "θ", "d͡ʒ", "t͡ʃ", "t͡s", "ʃ", "s", "z", "n", "l", "ɹ", "ɾ"])
+print assess_optimal(["ð", "θ"])# "d͡ʒ", "t͡ʃ", "t͡s", "ʃ", "s", "z", "n", "l", "ɹ", "ɾ"])
+print assess_optimal(["d͡ʒ", "t͡ʃ"])
+"""
 ##########Vowels##########
 
 print assess_optimal(["a"])
@@ -254,7 +255,7 @@ print assess_optimal(["i", "y", "ɪ", "ʏ"])
 print assess_optimal(["ɪ"])
 
 ##########################
-"""
+
 print assess_optimal(["l"])
 print assess_optimal(["m", "n"])	# nasals
 print assess_optimal(["f", "s"])	# fricatives
