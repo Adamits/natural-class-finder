@@ -1,6 +1,6 @@
 i y ~ ['+syllabic', '+high', '+tense', '+front']
 i y ɰ u ~ ['+syllabic', '+high']
-o ɔ ~ ['+syllabic', '+back', '+round', '-high', '-low']
+o ɔ ~ ['+syllabic', '-high', '-low', '+back', '+round']
 e ʌ ~ ['+syllabic', '-high', '-low', '-round']
 ʌ a ~ ['+syllabic', '-high', '-front', '-round']
 p t ~ ['-delayed_release', '-dorsal', '-voice']

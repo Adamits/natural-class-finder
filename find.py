@@ -186,12 +186,23 @@ def assess_vowels(phonemes=[]):
       round.append(feature)
 
   # LEFT FEATURES:
-  # Low only matters if it is +low
+  left_features = []
   for feature in left:
+    remove_feature = False
     if feature.name == "low":
-      ret_features.append(feature) if feature.is_positive() else ""
-    else:
-      ret_features.append(feature)
+      # +low uniquely identifies low vowels, don't need -high.
+      if feature.is_positive():
+        left_features = [feature]
+        break
+      # Only need -low if we do not have a tense feature
+      if "+high" in [f.full_string for f in left]
+      remove_feature = "tense" in [f.name for f in left]
+
+    # All other left features seem necessary
+    if not remove_feature:
+      left_features.append(feature)
+
+  ret_features += left_features
 
   # TOP FEATURES:
   # only care about positive, if no positive
@@ -239,6 +250,7 @@ def assess_optimal(phonemes=[]):
 
 
 # Demonstrate usage of FeaturesMatrix
+"""
 print assess_optimal(["t", "d"])
 print assess_optimal(["t", "d", "s", "z"])
 #"ð", "θ", "d͡ʒ", "t͡ʃ", "t͡s", "ʃ", "s", "z", "n", "l", "ɹ", "ɾ"
@@ -255,7 +267,7 @@ print assess_optimal(["i", "y", "ɪ", "ʏ"])
 print assess_optimal(["ɪ"])
 
 ##########################
-
+"""
 print assess_optimal(["l"])
 print assess_optimal(["m", "n"])	# nasals
 print assess_optimal(["f", "s"])	# fricatives
