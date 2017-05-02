@@ -86,8 +86,6 @@ def assess_manner(phonemes=[]):
     if x.name == "consonantal":
       x.make_opposite()  # swapping back consonantal values
 
-  print [f.full_string for f in shared_features]
-  print shared_num
   return [f for f in efficient_features if not f.is_zero()]
 
 
@@ -288,8 +286,9 @@ def is_fricative_or_affricate(features):
 
 
 # Demonstrate usage of FeaturesMatrix
-print assess_optimal(["n", "l", "r"])
 """
+print assess_optimal(["n", "l", "r"])
+
 print assess_optimal(["t", "d", "n"])
 print assess_optimal(["s", "z"])
 print assess_optimal(["t", "d", "s", "z"])

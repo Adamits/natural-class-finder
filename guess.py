@@ -53,6 +53,8 @@ def score_problem_1():
 
   preds = [line.split("~")[1] for line in guess_lines]
   true = [line.split("~")[1] for line in correct_lines]
+  print preds
+  print true
 
   print "accuracy for problem 1 is %s" % accuracy_score(true, preds)
   print "%d wrong!" % (len(preds) - accuracy_score(true, preds, normalize=False))
