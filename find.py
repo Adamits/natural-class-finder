@@ -154,7 +154,7 @@ def assess_place(phonemes=[]):
     if pos_parents and feature.name in [f for pos_parent in pos_parents for f in fm.place_tree.get(pos_parent.name)]:
       features_to_compare.append(feature)
 
-  # Return the children if there are any shared childern,
+  # Return the children if there are any shared childern, broken down by parent
   # otherwise return the shared positive parent feature
   # lastly if there are no other shared features, return the shared negative feature
   if features_to_compare:

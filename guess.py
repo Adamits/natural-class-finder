@@ -53,13 +53,11 @@ def score_problem_1():
 
   preds = [line.split("~")[1] for line in guess_lines]
   true = [line.split("~")[1] for line in correct_lines]
-  print preds
-  print true
 
   print "accuracy for problem 1 is %s" % accuracy_score(true, preds)
-  print "precision for problem 1 is %s" % precision_score(true, preds)
-  print "recall for problem 1 is %s" % recall_score(true, preds)
-  print "f1 for problem 1 is %s" % f1_score(true, preds)
+  print "precision for problem 1 is %s" % precision_score(true, preds, average="micro")
+  print "recall for problem 1 is %s" % recall_score(true, preds, average="micro")
+  print "f1 for problem 1 is %s" % f1_score(true, preds, average="micro")
 
 
 def score_problem_3():
@@ -68,6 +66,13 @@ def score_problem_3():
 
   preds = [line.split("~")[1:] for line in guess_lines]
   true = [line.split("~")[1:] for line in correct_lines]
-  accuracy_score(true, preds)
+  print preds
+  print true
+
+  print "accuracy for problem 3 is %s" % accuracy_score(true, preds)
+  print "precision for problem 3 is %s" % precision_score(true, preds, average="micro")
+  print "recall for problem 3 is %s" % recall_score(true, preds, average="micro")
+  print "f1 for problem 3 is %s" % f1_score(true, preds, average="micro")
 
 score_problem_1()
+score_problem_3()
