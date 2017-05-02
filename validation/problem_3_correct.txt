@@ -1,5 +1,5 @@
 i y ~ ['+syllabic', '+high', '+tense', '+front']
-i y ɰ u ~ ['+syllabic', '+high']
+i y ɰ u ~ ['-consonantal', '+high']
 o ɔ ~ ['+syllabic', '-high', '-low', '+back', '+round']
 e ʌ ~ ['+syllabic', '-high', '-low', '-round']
 ʌ a ~ ['+syllabic', '-high', '-front', '-round']

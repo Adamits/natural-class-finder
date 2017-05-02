@@ -29,7 +29,7 @@ def assess_manner(phonemes=[]):
       for x in shared_features:
         if x.is_negative():
           negative_counter += 1
-      print "negative counter is: ", negative_counter
+      #print "negative counter is: ", negative_counter
       if negative_counter == 6:  # reached end of chart, nothing +, stop
         efficient_features.append(Feature("-delayed_release"))
         return efficient_features
@@ -74,6 +74,7 @@ def assess_manner(phonemes=[]):
     else:
       efficient_features.append(shared_features[zero_right - 1])
       efficient_features.append(shared_features[zero_left + 1])
+
     """
     for x in shared_features[:zero_counter]:
     if x.is_negative():
@@ -85,7 +86,7 @@ def assess_manner(phonemes=[]):
     if x.name == "consonantal":
       x.make_opposite()  # swapping back consonantal values
 
-  return efficient_features
+  return [f for f in efficient_features if not f.is_zero()]
 
 
 """
@@ -277,25 +278,31 @@ def assess_optimal(phonemes=[]):
 
 
 # Demonstrate usage of FeaturesMatrix
-"""
+
 print assess_optimal(["t", "d"])
+print assess_optimal(["s", "z"])
 print assess_optimal(["t", "d", "s", "z"])
+print assess_optimal(["ɹ"])
 #"ð", "θ", "d͡ʒ", "t͡ʃ", "t͡s", "ʃ", "s", "z", "n", "l", "ɹ", "ɾ"
 print assess_optimal(["ð", "θ", "d͡ʒ", "t͡ʃ", "t͡s", "ʃ", "s", "z", "n", "l", "ɹ", "ɾ"])
 print assess_optimal(["ð", "θ"])# "d͡ʒ", "t͡ʃ", "t͡s", "ʃ", "s", "z", "n", "l", "ɹ", "ɾ"])
 print assess_optimal(["d͡ʒ", "t͡ʃ"])
+print assess_optimal(["i", "y", "ɰ", "u"])
 """
 ##########Vowels##########
 
+print assess_optimal(["i", "y", "ɰ", "u"])
 print assess_optimal(["a"])
 print assess_optimal(["e"])
 print assess_optimal(["a", "e"])
+print assess_optimal(["o", "e"])
 print assess_optimal(["e", "ʌ"])
 print assess_optimal(["i", "y", "ɪ", "ʏ"])
+print assess_optimal(["ɪ", "ʏ"])
 print assess_optimal(["ɪ"])
 
 ##########################
-"""
+
 print assess_optimal(["l"])
 print assess_optimal(["m", "n"])	# nasals
 print assess_optimal(["f", "s"])	# fricatives
