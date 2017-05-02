@@ -15,10 +15,10 @@ def assess_manner(phonemes=[]):
 
   efficient_features = []
 
-  shared_num = 5
-  for x in range(0, 4):
-    if shared_features[x].is_zero():
-      shared_num -= 1
+  shared_num = 0
+  for x in shared_features:
+    if not x.is_zero():
+      shared_num += 1
 
   if shared_num >= 5:  # all major manner features same, vowel/glide/liquid/nasal/fricative/affricate/stop
     if shared_features[0].is_positive():  # +syllabic
@@ -26,37 +26,64 @@ def assess_manner(phonemes=[]):
       return efficient_features
     else:
       negative_counter = 0  # marks where overlap is
-      for i, x in enumerate(shared_features):
-        negative_counter = 5  # set default
-        if x.is_positive():
-          negative_counter = i
-          break
-      # print "negative counter is: ", negative_counter
-      if negative_counter == 5:  # reached end of chart, nothing +, stop
+      for x in shared_features:
+        if x.is_negative():
+          negative_counter += 1
+      print "negative counter is: ", negative_counter
+      if negative_counter == 6:  # reached end of chart, nothing +, stop
         efficient_features.append(Feature("-delayed_release"))
         return efficient_features
+      elif negative_counter == 0:
+        efficient_features.append(Feature("+syllabic"))
 
-      # print [f.full_string for f in shared_features]
-      feature1 = shared_features[negative_counter - 1]
-      feature2 = shared_features[negative_counter]
-      # print feature1.full_string, feature2.full_string
+        # print [f.full_string for f in shared_features]
+    feature1 = shared_features[negative_counter - 1]
+    feature2 = shared_features[negative_counter]
+    # print feature1.full_string, feature2.full_string
 
-      efficient_features.append(feature1)
-      efficient_features.append(feature2)
+    efficient_features.append(feature1)
+    efficient_features.append(feature2)
 
   if shared_num < 5:  # covers two classes or more
-    zero_counter = min([i for i, x in enumerate(shared_features) if x.is_zero() == True])
+    zero_left = max([i for i, x in enumerate(shared_features[:5]) if x.is_zero() == True])
+    zero_right = min([i for i, x in enumerate(shared_features[:5]) if x.is_zero() == True])
 
-    efficient_features.append(shared_features[zero_counter + 1])
-    if zero_counter >= 0 and zero_counter < 3:
-      for x in shared_features[:zero_counter]:
-        if x.is_negative():
-          efficient_features.append(x)
-          # efficient_features.append(shared_features[zero_counter-1])
+    # efficient_features.append(shared_features[zero_counter + 1])
+
+    leftside = True
+    rightside = True
+    for i in range(0, zero_left):
+      if not shared_features[i].is_zero():
+        leftside = False
+
+    for i in range(zero_left, 5):
+      if not shared_features[i].is_positive():
+        leftside = False
+
+    for i in range(zero_right, 5):
+      if not shared_features[i].is_zero():
+        rightside = False
+    for i in range(0, zero_right - 1):
+      if not shared_features[i].is_negative():
+        rightside = False
+
+    if leftside:
+      efficient_features.append(shared_features[zero_left + 1])
+    elif rightside:
+      efficient_features.append(shared_features[zero_right - 1])
+    else:
+      efficient_features.append(shared_features[zero_right - 1])
+      efficient_features.append(shared_features[zero_left + 1])
+    """
+    for x in shared_features[:zero_counter]:
+    if x.is_negative():
+      efficient_features.append(x)
+      # efficient_features.append(shared_features[zero_counter-1])
+    """
 
   for x in efficient_features:
     if x.name == "consonantal":
-      x.make_opposite()  # swapping back consonantal values bs
+      x.make_opposite()  # swapping back consonantal values
 
   return efficient_features
 
@@ -194,9 +221,9 @@ def assess_vowels(phonemes=[]):
       if feature.is_positive():
         left_features = [feature]
         break
-      # Only need -low if we do not have a tense feature
-      if "+high" in [f.full_string for f in left]
-      remove_feature = "tense" in [f.name for f in left]
+
+      # Only need -low if high is positive or we do not have a tense feature
+      remove_feature = "tense" in [f.name for f in left] or "+high" in [f.full_string for f in left]
 
     # All other left features seem necessary
     if not remove_feature:
@@ -263,6 +290,7 @@ print assess_optimal(["d͡ʒ", "t͡ʃ"])
 print assess_optimal(["a"])
 print assess_optimal(["e"])
 print assess_optimal(["a", "e"])
+print assess_optimal(["e", "ʌ"])
 print assess_optimal(["i", "y", "ɪ", "ʏ"])
 print assess_optimal(["ɪ"])
 
